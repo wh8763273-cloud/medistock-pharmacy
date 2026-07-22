@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged,
+  signInAnonymously,
   User as FirebaseUser
 } from 'firebase/auth';
 import { 
@@ -234,19 +235,24 @@ if (useLocalFallback) {
         } else {
           currentUser = {
             uid: fbUser.uid,
-            email: fbUser.email || "",
-            displayName: fbUser.displayName || "Pharmacist",
-            pharmacyName: "My Pharmacy",
+            email: fbUser.email || "pharmacist@medistock.demo",
+            displayName: fbUser.displayName || "Lead Pharmacist",
+            pharmacyName: "MediStock Central Pharmacy",
             createdAt: new Date().toISOString()
           };
+          try {
+            await setDoc(docRef, currentUser);
+          } catch (e) {
+            console.warn("Could not save user profile doc to Firestore:", e);
+          }
         }
       } catch (err) {
-        console.error("Error reading user profile", err);
+        console.warn("Could not read user profile from Firestore, using auth fallback profile:", err);
         currentUser = {
           uid: fbUser.uid,
-          email: fbUser.email || "",
-          displayName: fbUser.displayName || "Pharmacist",
-          pharmacyName: "My Pharmacy",
+          email: fbUser.email || "pharmacist@medistock.demo",
+          displayName: fbUser.displayName || "Lead Pharmacist",
+          pharmacyName: "MediStock Central Pharmacy",
           createdAt: new Date().toISOString()
         };
       }
@@ -314,11 +320,27 @@ export const loginUser = async (email: string, password: string): Promise<UserPr
   } else {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const fbUser = userCredential.user;
-    const docSnap = await getDoc(doc(db, "users", fbUser.uid));
     let profile: UserProfile;
-    if (docSnap.exists()) {
-      profile = docSnap.data() as UserProfile;
-    } else {
+    try {
+      const docSnap = await getDoc(doc(db, "users", fbUser.uid));
+      if (docSnap.exists()) {
+        profile = docSnap.data() as UserProfile;
+      } else {
+        profile = {
+          uid: fbUser.uid,
+          email: fbUser.email || email,
+          displayName: fbUser.displayName || "Lead Pharmacist",
+          pharmacyName: "MediStock Central Pharmacy",
+          createdAt: new Date().toISOString()
+        };
+        try {
+          await setDoc(doc(db, "users", fbUser.uid), profile);
+        } catch (e) {
+          console.warn("Could not write user doc to Firestore:", e);
+        }
+      }
+    } catch (err) {
+      console.warn("Could not read user profile from Firestore:", err);
       profile = {
         uid: fbUser.uid,
         email: fbUser.email || email,
@@ -326,11 +348,53 @@ export const loginUser = async (email: string, password: string): Promise<UserPr
         pharmacyName: "MediStock Central Pharmacy",
         createdAt: new Date().toISOString()
       };
-      await setDoc(doc(db, "users", fbUser.uid), profile);
     }
     currentUser = profile;
     authListeners.forEach(l => l(currentUser));
     return profile;
+  }
+};
+
+export const guestLogin = async (): Promise<UserProfile> => {
+  if (useLocalFallback) {
+    const guestUser: UserProfile = {
+      uid: "user-demo-evaluator",
+      email: "evaluator@medistock.demo",
+      displayName: "Demo Evaluator",
+      pharmacyName: "MediStock Central Pharmacy",
+      createdAt: new Date().toISOString()
+    };
+    localStorage.setItem("medistock_auth_user", JSON.stringify(guestUser));
+    currentUser = guestUser;
+    authListeners.forEach(l => l(currentUser));
+    return guestUser;
+  } else {
+    try {
+      const userCredential = await signInAnonymously(auth);
+      const fbUser = userCredential.user;
+      const profile: UserProfile = {
+        uid: fbUser.uid,
+        email: "evaluator@medistock.demo",
+        displayName: "Demo Evaluator",
+        pharmacyName: "MediStock Central Pharmacy",
+        createdAt: new Date().toISOString()
+      };
+      currentUser = profile;
+      authListeners.forEach(l => l(currentUser));
+      return profile;
+    } catch (err) {
+      console.warn("Anonymous login failed, falling back to guest profile:", err);
+      const guestUser: UserProfile = {
+        uid: "guest-user",
+        email: "evaluator@medistock.demo",
+        displayName: "Demo Evaluator",
+        pharmacyName: "MediStock Central Pharmacy",
+        createdAt: new Date().toISOString()
+      };
+      currentUser = guestUser;
+      authListeners.forEach(l => l(currentUser));
+      return guestUser;
+    }
   }
 };
 

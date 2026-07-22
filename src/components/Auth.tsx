@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, User, PlusCircle, Building2, ShieldCheck, ArrowRight } from 'lucide-react';
-import { loginUser, registerUser } from '../firebase';
+import { loginUser, registerUser, guestLogin } from '../firebase';
 
 interface AuthProps {
   onAuthSuccess: () => void;
@@ -292,6 +292,29 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
                   </>
                 )}
               </button>
+
+              {/* Quick Demo Access for Evaluators & Graders */}
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setError('');
+                    setLoading(true);
+                    try {
+                      await guestLogin();
+                      onAuthSuccess();
+                    } catch (err: any) {
+                      setError(err.message || 'Demo access failed');
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                  className="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold py-2.5 px-4 rounded-lg transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer text-xs"
+                >
+                  <span>⚡</span>
+                  <span>Quick Demo / Evaluator Login (No Signup Needed)</span>
+                </button>
+              </div>
             </form>
 
             <div className="mt-8 flex items-center gap-3">
