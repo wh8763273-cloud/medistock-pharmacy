@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Default deny catch-all rule
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Users collection: Each authenticated user can read & write their own profile
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Medicines collection: Authenticated pharmacy staff can perform full CRUD
+    match /medicines/{medicineId} {
+      allow read, create, update, delete: if isSignedIn();
+    }
+
+    // Sales collection: Authenticated pharmacy staff can read & record sales invoices
+    match /sales/{saleId} {
+      allow read, create, update, delete: if isSignedIn();
+    }
+
+    // Suppliers collection: Authenticated pharmacy staff can manage distributor list
+    match /suppliers/{supplierId} {
+      allow read, create, update, delete: if isSignedIn();
+    }
+  }
+}

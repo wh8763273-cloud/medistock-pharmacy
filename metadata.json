@@ -1,0 +1,6 @@
+{
+  "name": "MediStock AI",
+  "description": "Smart Pharmacy Store Management System with inventory tracking, sales reporting, and AI-powered assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

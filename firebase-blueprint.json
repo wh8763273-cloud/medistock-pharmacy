@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile for pharmacy staff",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "pharmacyName": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "displayName", "pharmacyName"]
+    },
+    "Medicine": {
+      "title": "Medicine",
+      "description": "Pharmacy drug inventory record",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "genericName": { "type": "string" },
+        "brand": { "type": "string" },
+        "category": { "type": "string" },
+        "batchNumber": { "type": "string" },
+        "manufacturer": { "type": "string" },
+        "quantity": { "type": "number" },
+        "purchasePrice": { "type": "number" },
+        "sellingPrice": { "type": "number" },
+        "expiryDate": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "genericName", "brand", "category", "batchNumber", "manufacturer", "quantity", "purchasePrice", "sellingPrice", "expiryDate"]
+    },
+    "Sale": {
+      "title": "Sale",
+      "description": "Pharmacy sales transaction invoice",
+      "type": "object",
+      "properties": {
+        "invoiceNumber": { "type": "string" },
+        "subtotal": { "type": "number" },
+        "tax": { "type": "number" },
+        "total": { "type": "number" },
+        "customerName": { "type": "string" },
+        "pharmacistId": { "type": "string" },
+        "pharmacistName": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["invoiceNumber", "subtotal", "tax", "total", "createdAt"]
+    },
+    "Supplier": {
+      "title": "Supplier",
+      "description": "Wholesale medicine supplier distributor details",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "contactPerson": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "address": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "contactPerson", "email", "phone", "address"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles indexed by UID"
+    },
+    "/medicines/{medicineId}": {
+      "schema": "Medicine",
+      "description": "Inventory of medicines"
+    },
+    "/sales/{saleId}": {
+      "schema": "Sale",
+      "description": "Sales invoice receipts"
+    },
+    "/suppliers/{supplierId}": {
+      "schema": "Supplier",
+      "description": "Wholesale distributors list"
+    }
+  }
+}
