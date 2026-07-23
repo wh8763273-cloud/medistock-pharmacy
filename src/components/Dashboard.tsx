@@ -283,7 +283,7 @@ export default function Dashboard({
           <div className="mt-4">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Today's Sales</p>
             <h3 className="text-2xl font-bold text-emerald-600 mt-1">
-              ${todaySalesRevenue.toFixed(2)}
+              Rs. {todaySalesRevenue.toLocaleString('en-PK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </h3>
           </div>
         </div>
@@ -307,7 +307,7 @@ export default function Dashboard({
           </div>
           <div className="mt-4">
             <p className="text-xs font-semibold text-white/70 uppercase tracking-wider">Total Monthly Revenue</p>
-            <h3 className="text-2xl font-bold mt-1">${monthlySalesRevenue.toFixed(2)}</h3>
+            <h3 className="text-2xl font-bold mt-1">Rs. {monthlySalesRevenue.toLocaleString('en-PK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h3>
             <p className="text-[11px] text-slate-400 mt-1">Sum of current calendar month</p>
           </div>
         </div>
@@ -411,7 +411,7 @@ export default function Dashboard({
                         </p>
                       </td>
                       <td className="p-3 font-medium text-slate-800">
-                        ${sale.total.toFixed(2)}
+                        Rs. {sale.total.toLocaleString('en-PK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
                       <td className="p-3">
                         <span className="px-2 py-0.5 rounded-full text-[10px] font-bold status-pill-green">

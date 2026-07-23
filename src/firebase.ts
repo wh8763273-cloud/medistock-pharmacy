@@ -69,8 +69,8 @@ const DEFAULT_MEDICINES: Medicine[] = [
     batchNumber: "AMX202604",
     manufacturer: "GSK Pharmaceutics",
     quantity: 120,
-    purchasePrice: 2.50,
-    sellingPrice: 5.00,
+    purchasePrice: 180.00,
+    sellingPrice: 280.00,
     expiryDate: "2026-11-15",
     createdAt: new Date().toISOString()
   },
@@ -83,8 +83,8 @@ const DEFAULT_MEDICINES: Medicine[] = [
     batchNumber: "LIS202511",
     manufacturer: "AstraZeneca",
     quantity: 8, // Low stock demo
-    purchasePrice: 1.20,
-    sellingPrice: 3.50,
+    purchasePrice: 120.00,
+    sellingPrice: 220.00,
     expiryDate: "2027-02-20",
     createdAt: new Date().toISOString()
   },
@@ -97,8 +97,8 @@ const DEFAULT_MEDICINES: Medicine[] = [
     batchNumber: "MET202601",
     manufacturer: "Merck KGaA",
     quantity: 250,
-    purchasePrice: 0.80,
-    sellingPrice: 2.00,
+    purchasePrice: 80.00,
+    sellingPrice: 150.00,
     expiryDate: "2026-08-10", // Expiring soon demo
     createdAt: new Date().toISOString()
   },
@@ -111,8 +111,8 @@ const DEFAULT_MEDICINES: Medicine[] = [
     batchNumber: "ATO202607",
     manufacturer: "Pfizer Inc.",
     quantity: 15, // Low stock
-    purchasePrice: 3.00,
-    sellingPrice: 7.50,
+    purchasePrice: 250.00,
+    sellingPrice: 420.00,
     expiryDate: "2026-08-01", // Expiring soon
     createdAt: new Date().toISOString()
   },
@@ -125,8 +125,8 @@ const DEFAULT_MEDICINES: Medicine[] = [
     batchNumber: "PAR202609",
     manufacturer: "Haleon PLC",
     quantity: 500,
-    purchasePrice: 0.15,
-    sellingPrice: 0.50,
+    purchasePrice: 20.00,
+    sellingPrice: 40.00,
     expiryDate: "2028-12-31",
     createdAt: new Date().toISOString()
   }
@@ -138,8 +138,8 @@ const DEFAULT_SUPPLIERS: Supplier[] = [
     name: "Medica Distribution Corp",
     contactPerson: "Sarah Jenkins",
     email: "orders@medicadist.com",
-    phone: "+1-555-0199",
-    address: "742 Evergreen Terrace, Springfield",
+    phone: "+92-300-5550199",
+    address: "742 Evergreen Terrace, Lahore",
     createdAt: new Date().toISOString()
   },
   {
@@ -147,8 +147,8 @@ const DEFAULT_SUPPLIERS: Supplier[] = [
     name: "Astra Wholesale Pharmacy",
     contactPerson: "Dr. David Vance",
     email: "vance.d@astrawholesale.com",
-    phone: "+1-555-0142",
-    address: "100 Medical Plaza Blvd, Suite 400",
+    phone: "+92-321-5550142",
+    address: "100 Medical Plaza Blvd, Karachi",
     createdAt: new Date().toISOString()
   }
 ];
@@ -158,11 +158,11 @@ const DEFAULT_SALES: Sale[] = [
     id: "sale-1",
     invoiceNumber: "INV-9021",
     items: [
-      { medicineId: "med-1", name: "Amoxicillin", genericName: "Amoxicillin Trihydrate", quantity: 2, price: 5.00, total: 10.00 }
+      { medicineId: "med-1", name: "Amoxicillin", genericName: "Amoxicillin Trihydrate", quantity: 2, price: 280.00, total: 560.00 }
     ],
-    subtotal: 10.00,
-    tax: 0.80,
-    total: 10.80,
+    subtotal: 560.00,
+    tax: 44.80,
+    total: 604.80,
     customerName: "Alice Smith",
     createdAt: new Date().toISOString(),
     pharmacistId: "demo-user",
@@ -172,11 +172,11 @@ const DEFAULT_SALES: Sale[] = [
     id: "sale-2",
     invoiceNumber: "INV-9022",
     items: [
-      { medicineId: "med-2", name: "Lisinopril", genericName: "Lisinopril Dihydrate", quantity: 5, price: 3.50, total: 17.50 }
+      { medicineId: "med-2", name: "Lisinopril", genericName: "Lisinopril Dihydrate", quantity: 5, price: 220.00, total: 1100.00 }
     ],
-    subtotal: 17.50,
-    tax: 1.40,
-    total: 18.90,
+    subtotal: 1100.00,
+    tax: 88.00,
+    total: 1188.00,
     customerName: "Bob Johnson",
     createdAt: new Date().toISOString(),
     pharmacistId: "demo-user",
@@ -186,11 +186,11 @@ const DEFAULT_SALES: Sale[] = [
     id: "sale-3",
     invoiceNumber: "INV-9024",
     items: [
-      { medicineId: "med-4", name: "Atorvastatin", genericName: "Atorvastatin Calcium", quantity: 3, price: 7.50, total: 22.50 }
+      { medicineId: "med-4", name: "Atorvastatin", genericName: "Atorvastatin Calcium", quantity: 3, price: 420.00, total: 1260.00 }
     ],
-    subtotal: 22.50,
-    tax: 1.80,
-    total: 24.30,
+    subtotal: 1260.00,
+    tax: 100.80,
+    total: 1360.80,
     customerName: "Charlie Brown",
     createdAt: new Date().toISOString(),
     pharmacistId: "demo-user",

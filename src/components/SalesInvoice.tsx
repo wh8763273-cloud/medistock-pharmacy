@@ -240,9 +240,9 @@ export default function SalesInvoice({
                 <div key={index} className="flex justify-between items-center text-[11px]">
                   <div>
                     <p className="font-semibold text-slate-800">{item.name}</p>
-                    <p className="text-[10px] text-slate-400">{item.quantity} units x ${item.price.toFixed(2)}</p>
+                    <p className="text-[10px] text-slate-400">{item.quantity} units x Rs. {item.price.toFixed(2)}</p>
                   </div>
-                  <span className="font-bold text-slate-800">${item.total.toFixed(2)}</span>
+                  <span className="font-bold text-slate-800">Rs. {item.total.toFixed(2)}</span>
                 </div>
               ))}
             </div>
@@ -251,15 +251,15 @@ export default function SalesInvoice({
             <div className="space-y-1.5 pt-1 text-right">
               <div className="flex justify-between text-right text-slate-400">
                 <span>Subtotal:</span>
-                <span>${recentInvoice.subtotal.toFixed(2)}</span>
+                <span>Rs. {recentInvoice.subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-right text-slate-400">
                 <span>Taxes (8% Rx-sales):</span>
-                <span>${recentInvoice.tax.toFixed(2)}</span>
+                <span>Rs. {recentInvoice.tax.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-right text-sm font-bold text-emerald-700 border-t border-slate-100 pt-2">
-                <span>Total Amount Paid:</span>
-                <span>${recentInvoice.total.toFixed(2)}</span>
+                <span>Grand Total Amount Paid:</span>
+                <span>Rs. {recentInvoice.total.toFixed(2)}</span>
               </div>
             </div>
 
@@ -330,7 +330,7 @@ export default function SalesInvoice({
                           <div className="flex-grow">
                             <p className="font-bold text-slate-800 text-xs">{item.name}</p>
                             <p className="text-[10px] text-slate-400 italic">{item.genericName}</p>
-                            <p className="text-emerald-600 font-semibold text-[10px] mt-0.5">${item.price.toFixed(2)} / unit</p>
+                            <p className="text-emerald-600 font-semibold text-[10px] mt-0.5">Rs. {item.price.toFixed(2)} / unit</p>
                           </div>
 
                           {/* Interactive Quantity Stepper */}
@@ -352,7 +352,7 @@ export default function SalesInvoice({
                             </button>
                           </div>
 
-                          <span className="font-bold text-slate-800 text-xs w-16 text-right">${item.total.toFixed(2)}</span>
+                          <span className="font-bold text-slate-800 text-xs w-16 text-right">Rs. {item.total.toFixed(2)}</span>
 
                           <button
                             type="button"
@@ -372,15 +372,15 @@ export default function SalesInvoice({
                 <div className="pt-4 border-t border-slate-100 space-y-1.5">
                   <div className="flex justify-between text-slate-600">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>Rs. {subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-slate-600">
                     <span>Rx Sales Tax (8.0%)</span>
-                    <span>${tax.toFixed(2)}</span>
+                    <span>Rs. {tax.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-emerald-700 font-bold text-sm pt-2 border-t border-slate-100">
-                    <span>Total Bill Amount</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>Grand Total</span>
+                    <span>Rs. {total.toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -439,7 +439,7 @@ export default function SalesInvoice({
                             <p className="text-[9px] text-slate-400 mt-0.5">Stock capacity: <span className={med.quantity <= 15 ? "text-amber-600 font-bold" : "font-medium"}>{med.quantity} units</span></p>
                           </div>
                           <div className="text-right">
-                            <span className="font-bold text-emerald-600 text-[11px]">${med.sellingPrice.toFixed(2)}</span>
+                            <span className="font-bold text-emerald-600 text-[11px]">Rs. {med.sellingPrice.toFixed(2)}</span>
                             <div className="text-[9px] text-emerald-600 font-bold mt-1 flex items-center justify-end gap-0.5">
                               Add <Plus size={10} />
                             </div>
@@ -463,7 +463,7 @@ export default function SalesInvoice({
                             <p className="font-bold text-slate-800 text-[11px]">{med.name}</p>
                             <p className="text-[9px] text-slate-400">{med.category} • {med.quantity} available</p>
                           </div>
-                          <span className="font-bold text-emerald-600 text-xs">${med.sellingPrice.toFixed(2)}</span>
+                          <span className="font-bold text-emerald-600 text-xs">Rs. {med.sellingPrice.toFixed(2)}</span>
                         </div>
                       ))}
                     </div>
@@ -517,10 +517,10 @@ export default function SalesInvoice({
                         </div>
                       </td>
                       <td className="p-4 font-medium text-slate-400">
-                        ${sale.tax.toFixed(2)}
+                        Rs. {sale.tax.toFixed(2)}
                       </td>
                       <td className="p-4 font-bold text-emerald-700 text-sm">
-                        ${sale.total.toFixed(2)}
+                        Rs. {sale.total.toFixed(2)}
                       </td>
                       <td className="p-4 text-slate-400">
                         {new Date(sale.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}

@@ -199,14 +199,14 @@ export default function BulkImportModal({ isOpen, onClose, onBulkImport }: BulkI
   const downloadSampleCSV = () => {
     const csvHeader = "Name,Generic Name,Brand,Category,Batch Number,Manufacturer,Quantity,Purchase Price,Selling Price,Expiry Date\n";
     const csvRows = [
-      "Amoxicillin 500mg,Amoxicillin,GlaxoSmithKline,Antibiotics,BN-90812,GSK Pharma,250,3.50,5.00,2027-08-15",
-      "Azithromycin 250mg,Azithromycin,Pfizer,Antibiotics,BN-44321,Pfizer Ltd,120,6.00,9.50,2026-11-20",
-      "Paracetamol 500mg,Acetaminophen,Panadol,Pain Relievers,BN-11204,GSK Consumer,500,0.80,1.50,2028-02-10",
-      "Omeprazole 20mg,Omeprazole,Prilosec,Gastrointestinal,BN-77821,AstraZeneca,180,2.10,4.00,2027-01-30",
-      "Metformin 800mg,Metformin HCl,Glucophage,Diabetic Care,BN-33910,Merck,300,1.50,3.00,2027-05-18",
-      "Atorvastatin 10mg,Atorvastatin,Lipitor,Cardiac,BN-66541,Pfizer Inc,150,4.20,7.50,2026-12-05",
-      "Salbutamol Inhaler 100mcg,Albuterol,Ventolin,Respiratory,BN-88210,GSK Respiratory,80,12.00,18.50,2027-09-25",
-      "Vitamin C 1000mg,Ascorbic Acid,Cebion,Vitamins & Supplements,BN-22190,Procter & Gamble,400,1.20,2.80,2028-06-30"
+      "Amoxicillin 500mg,Amoxicillin,GlaxoSmithKline,Antibiotics,BN-90812,GSK Pharma,250,180.00,280.00,2027-08-15",
+      "Azithromycin 250mg,Azithromycin,Pfizer,Antibiotics,BN-44321,Pfizer Ltd,120,350.00,520.00,2026-11-20",
+      "Paracetamol 500mg,Acetaminophen,Panadol,Pain Relievers,BN-11204,GSK Consumer,500,20.00,40.00,2028-02-10",
+      "Omeprazole 20mg,Omeprazole,Prilosec,Gastrointestinal,BN-77821,AstraZeneca,180,110.00,210.00,2027-01-30",
+      "Metformin 800mg,Metformin HCl,Glucophage,Diabetic Care,BN-33910,Merck,300,80.00,150.00,2027-05-18",
+      "Atorvastatin 10mg,Atorvastatin,Lipitor,Cardiac,BN-66541,Pfizer Inc,150,250.00,420.00,2026-12-05",
+      "Salbutamol Inhaler 100mcg,Albuterol,Ventolin,Respiratory,BN-88210,GSK Respiratory,80,650.00,980.00,2027-09-25",
+      "Vitamin C 1000mg,Ascorbic Acid,Cebion,Vitamins & Supplements,BN-22190,Procter & Gamble,400,90.00,180.00,2028-06-30"
     ].join("\n");
 
     const blob = new Blob([csvHeader + csvRows], { type: 'text/csv;charset=utf-8;' });
@@ -365,8 +365,8 @@ export default function BulkImportModal({ isOpen, onClose, onBulkImport }: BulkI
                             </td>
                             <td className="p-2.5 text-slate-500 font-mono text-[10px]">{item.batchNumber}</td>
                             <td className="p-2.5 text-right font-bold text-slate-800">{item.quantity}</td>
-                            <td className="p-2.5 text-right text-slate-600">${item.purchasePrice.toFixed(2)}</td>
-                            <td className="p-2.5 text-right font-bold text-emerald-600">${item.sellingPrice.toFixed(2)}</td>
+                            <td className="p-2.5 text-right text-slate-600">Rs. {item.purchasePrice.toFixed(2)}</td>
+                            <td className="p-2.5 text-right font-bold text-emerald-600">Rs. {item.sellingPrice.toFixed(2)}</td>
                             <td className="p-2.5 text-slate-600 text-[11px]">{item.expiryDate}</td>
                           </tr>
                         ))}

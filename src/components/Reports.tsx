@@ -163,21 +163,21 @@ export default function Reports({ medicines, sales, onNavigate }: ReportsProps) 
             {/* Box 1: Revenue */}
             <div className="bg-white p-5 border border-slate-200 rounded-xl custom-shadow">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Dispensing Gross Revenue</span>
-              <h4 className="text-2xl font-bold text-slate-800 mt-1">${salesRevenueSum.toFixed(2)}</h4>
+              <h4 className="text-2xl font-bold text-slate-800 mt-1">Rs. {salesRevenueSum.toLocaleString('en-PK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h4>
               <p className="text-[10px] text-slate-400 mt-1">Calculated from checkout logs</p>
             </div>
 
             {/* Box 2: Cost of Goods */}
             <div className="bg-white p-5 border border-slate-200 rounded-xl custom-shadow">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Estimated Acquisition Cost</span>
-              <h4 className="text-2xl font-bold text-slate-500 mt-1">${costOfGoodsSold.toFixed(2)}</h4>
+              <h4 className="text-2xl font-bold text-slate-500 mt-1">Rs. {costOfGoodsSold.toLocaleString('en-PK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h4>
               <p className="text-[10px] text-slate-400 mt-1">Acquisition value of dispensed stocks</p>
             </div>
 
             {/* Box 3: Net Margin profits */}
             <div className="bg-white p-5 border-l-4 border-l-emerald-500 border-y border-r border-slate-200 rounded-xl custom-shadow">
               <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block">Estimated Net Margins</span>
-              <h4 className="text-2xl font-bold text-emerald-700 mt-1">${netProfits.toFixed(2)}</h4>
+              <h4 className="text-2xl font-bold text-emerald-700 mt-1">Rs. {netProfits.toLocaleString('en-PK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h4>
               <p className="text-[10px] text-emerald-600 mt-1">Avg margin: {salesRevenueSum > 0 ? ((netProfits / salesRevenueSum) * 100).toFixed(1) : 0}%</p>
             </div>
 
@@ -228,8 +228,8 @@ export default function Reports({ medicines, sales, onNavigate }: ReportsProps) 
                             ))}
                           </div>
                         </td>
-                        <td className="p-3 text-slate-500">${s.tax.toFixed(2)}</td>
-                        <td className="p-3 font-bold text-emerald-700">${s.total.toFixed(2)}</td>
+                        <td className="p-3 text-slate-500">Rs. {s.tax.toFixed(2)}</td>
+                        <td className="p-3 font-bold text-emerald-700">Rs. {s.total.toFixed(2)}</td>
                         <td className="p-3 text-slate-400">{new Date(s.createdAt).toLocaleDateString()}</td>
                       </tr>
                     ))}
@@ -290,7 +290,7 @@ export default function Reports({ medicines, sales, onNavigate }: ReportsProps) 
                             {m.quantity === 0 ? "OUT OF STOCK" : `${m.quantity} UNITS LEFT`}
                           </span>
                         </td>
-                        <td className="p-3 text-slate-600 font-bold">${m.purchasePrice.toFixed(2)}</td>
+                        <td className="p-3 text-slate-600 font-bold">Rs. {m.purchasePrice.toFixed(2)}</td>
                         <td className="p-3 text-slate-400">{m.manufacturer}</td>
                         <td className="p-3 text-right">
                           <button

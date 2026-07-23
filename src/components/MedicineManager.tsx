@@ -418,8 +418,8 @@ export default function MedicineManager({
 
                     {/* Price details */}
                     <td className="p-4 text-slate-600">
-                      <p className="font-medium">Buy: <span className="font-semibold">${med.purchasePrice.toFixed(2)}</span></p>
-                      <p className="text-[10px] text-emerald-700 mt-0.5 font-medium">Sell: <span className="font-semibold">${med.sellingPrice.toFixed(2)}</span></p>
+                      <p className="font-medium">Buy: <span className="font-semibold">Rs. {med.purchasePrice.toFixed(2)}</span></p>
+                      <p className="text-[10px] text-emerald-700 mt-0.5 font-medium">Sell: <span className="font-semibold">Rs. {med.sellingPrice.toFixed(2)}</span></p>
                     </td>
 
                     {/* Expiry Status */}
@@ -609,7 +609,7 @@ export default function MedicineManager({
 
                 {/* Purchase Cost */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Purchase Unit Price ($)</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Purchase Unit Price (Rs.)</label>
                   <input
                     type="number"
                     step="0.01"
@@ -623,7 +623,7 @@ export default function MedicineManager({
 
                 {/* Selling Price */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Selling Unit Price ($)</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Selling Unit Price (Rs.)</label>
                   <input
                     type="number"
                     step="0.01"
