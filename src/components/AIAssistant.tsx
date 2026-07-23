@@ -69,7 +69,9 @@ export default function AIAssistant({
       });
 
       if (!response.ok) {
-        throw new Error("Failed to communicate with AI");
+        const errData = await response.json().catch(() => null);
+        const detail = errData?.details || errData?.error || "Server returned non-200 status.";
+        throw new Error(detail);
       }
 
       const reply = await response.json();
@@ -83,12 +85,12 @@ export default function AIAssistant({
 
       setMessages(prev => [...prev, modelMsg]);
 
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      console.error("AI Assistant error:", err);
       const errorMsg: ChatMessage = {
         id: "msg-err-" + Math.random().toString(36).substr(2, 9),
         role: 'model',
-        content: "⚠️ **Connection Error:** I was unable to connect to the server. Please ensure the `GEMINI_API_KEY` is configured correctly, and your backend server is running.",
+        content: `⚠️ **AI Assistant Connection Issue:** ${err.message || 'Unable to communicate with the server.'}\n\nPlease verify that your \`GEMINI_API_KEY\` is correctly set in **Settings > Secrets** in AI Studio.`,
         timestamp: new Date().toISOString()
       };
       setMessages(prev => [...prev, errorMsg]);

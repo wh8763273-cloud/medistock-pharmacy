@@ -20,7 +20,14 @@ function getAIClient(): GoogleGenAI {
     if (!apiKey) {
       throw new Error("GEMINI_API_KEY is not configured in environment variables.");
     }
-    aiClient = new GoogleGenAI({ apiKey });
+    aiClient = new GoogleGenAI({
+      apiKey,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        },
+      },
+    });
   }
   return aiClient;
 }
@@ -33,19 +40,18 @@ app.post("/api/chat", async (req, res) => {
       return res.status(400).json({ error: "Invalid messages format. Must be an array of chat messages." });
     }
 
-    let ai;
+    let ai: GoogleGenAI;
     try {
       ai = getAIClient();
     } catch (apiKeyError: any) {
-      // Elegant user-facing fallback if Gemini Key is not set up
+      // User-facing fallback if Gemini Key is not set up
       return res.json({
         role: "model",
-        content: "⚠️ **Developer Note:** The `GEMINI_API_KEY` is not set in your environment variables. Please add your key in the AI Studio Secrets panel. \n\n*In the meantime, here is a simulated pharmacy response:* \n\nBased on your query, paracetamol is a common analgesic and antipyretic. For general storage, keep it in a cool, dry place below 25°C, away from direct sunlight and moisture. Standard dosage for adults is 500mg to 1000mg every 4 to 6 hours as needed, not exceeding 4000mg in 24 hours. Always check with a certified pharmacist or doctor before taking or prescribing medications."
+        content: "⚠️ **GEMINI_API_KEY Not Found:** The `GEMINI_API_KEY` environment variable is not configured. Please add your key in the AI Studio **Settings > Secrets** panel.\n\n*In the meantime, here is a helpful pharmacy response:* \n\nParacetamol (Acetaminophen) is an analgesic and antipyretic medicine. Store in a cool, dry place below 25°C. Standard dosage for adults is 500mg to 1000mg every 4 to 6 hours as needed (not exceeding 4000mg in 24 hours). Always consult a qualified physician or certified pharmacist for personalized medical advice."
       });
     }
 
     // Format chat conversation for Gemini
-    // We can inject a strict system instruction to guide the model
     const systemInstruction = `You are a helpful, professional, and friendly AI Pharmacy Assistant for MediStock.
 Your job is to answer ONLY pharmacy-related, medicine-related, pharmaceutical-store, or healthcare-related questions.
 Examples of acceptable topics:
@@ -57,7 +63,7 @@ Examples of acceptable topics:
 - General pharmacy operations or drug class queries.
 
 CRITICAL INSTRUCTION:
-If the user's query is NOT related to pharmacy, medicines, pharmacology, health, store inventory, or pharmacy operations, you MUST politely and friendly decline to answer. For example, say: "I am your MediStock Pharmacy Assistant, so I can only answer pharmacy-related or medical queries. Please feel free to ask me about medicines, dosages, storage, or patient counselling!"
+If the user's query is NOT related to pharmacy, medicines, pharmacology, health, store inventory, or pharmacy operations, you MUST politely decline to answer. Say: "I am your MediStock Pharmacy Assistant, so I can only answer pharmacy-related or medical queries. Please feel free to ask me about medicines, dosages, storage, or patient counselling!"
 
 Keep answers concise, clear, and medically accurate. Always include a short, standard medical disclaimer at the very end of clinical advice advising patients to consult their doctor.
 
@@ -66,17 +72,17 @@ ${currentMedicineContext ? JSON.stringify(currentMedicineContext) : "No specific
 
     // Map conversation array to content parts
     const chatContents = messages.map((m: any) => ({
-      role: m.role === "model" ? "model" as const : "user" as const,
+      role: m.role === "model" ? ("model" as const) : ("user" as const),
       parts: [{ text: m.content }]
     }));
 
-    // Use gemini-2.5-flash for excellent, speedy pharmacy chat assistance
+    // Use gemini-3.6-flash for fast, accurate pharmacy assistance
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: chatContents,
       config: {
         systemInstruction,
-        temperature: 0.2, // Low temperature for high precision clinical/pharmaceutical facts
+        temperature: 0.2,
       }
     });
 
@@ -91,7 +97,7 @@ ${currentMedicineContext ? JSON.stringify(currentMedicineContext) : "No specific
     console.error("Gemini API Error:", error);
     res.status(500).json({ 
       error: "Failed to communicate with AI Assistant", 
-      details: error.message 
+      details: error.message || String(error)
     });
   }
 });
