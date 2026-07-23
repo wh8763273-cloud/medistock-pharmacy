@@ -124,12 +124,12 @@ Below are high-resolution screenshots of MediStock in action:
 
 ---
 
-## 7. Quick Demo / Evaluator Access (No Registration Needed)
+## 7. User Authentication & Access
 
-Graders and evaluators can instantly access the application without registering a new email account:
+MediStock includes a secure authentication module:
 1. Open the [Live Deployed Application Link](https://ais-pre-vgz2sbzjtvi4e6so6pwt4o-1065862164607.asia-southeast1.run.app).
-2. On the login screen, click the green button: **`⚡ Quick Demo / Evaluator Login (No Signup Needed)`**.
-3. You will immediately be signed in as **Demo Evaluator** with full access to inventory, POS sales checkout, supplier management, reports, and AI consultation.
+2. Users can **Register** a new account with their email, password, and pharmacy name, or **Login** with existing credentials.
+3. Upon signing in, users gain full access to real-time inventory management, POS billing terminal, supplier contacts, financial reports, and the AI clinical assistant.
 
 ---
 
@@ -205,7 +205,7 @@ git push -u origin main
 | :--- | :--- | :--- |
 | **IDEA** | Originality & Real-World Problem | Solves critical community pharmacy operational challenges (stockouts, expired drugs, patient counselling, manual accounting errors). |
 | **COMPLETION** | Complete, End-to-End Working App | 100% finished functionality: Inventory management, POS billing, automated stock deduction, supplier contacts, sales reporting, and AI assistant. |
-| **DEPLOYMENT** | Working Public Live URL | Live public link hosted and accessible in any browser with instant one-click demo login. |
+| **DEPLOYMENT** | Working Public Live URL | Live public link hosted and accessible in any browser with secure sign up / log in. |
 | **REPORTING** | High Quality README Report | Includes problem statement, live link, feature breakdown, system prompt, stack table, 3 screenshots, local setup, and GitHub export guide. |
 
 ---
