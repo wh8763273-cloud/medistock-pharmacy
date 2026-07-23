@@ -29,6 +29,7 @@ interface DashboardProps {
   onOpenAddMedicine: () => void;
   onOpenCreateSale: () => void;
   onSelectMedicineContext?: (med: Medicine) => void;
+  onFilterInventory?: (stockFilter: 'All' | 'Low' | 'Out' | 'Normal', expiryFilter: 'All' | 'Expired' | 'Expiring' | 'Safe') => void;
 }
 
 export default function Dashboard({ 
@@ -37,7 +38,8 @@ export default function Dashboard({
   onNavigate, 
   onOpenAddMedicine, 
   onOpenCreateSale,
-  onSelectMedicineContext
+  onSelectMedicineContext,
+  onFilterInventory
 }: DashboardProps) {
 
   // Dynamic calculations
@@ -162,14 +164,24 @@ export default function Dashboard({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         
         {/* Total Medicines Card */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 custom-shadow flex flex-col justify-between hover:shadow-md transition-all">
+        <div 
+          onClick={() => {
+            if (onFilterInventory) onFilterInventory('All', 'All');
+            else onNavigate('inventory');
+          }}
+          className="bg-white p-6 rounded-2xl border border-slate-200 custom-shadow flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 active:scale-95 transition-all cursor-pointer group relative"
+          title="Click to view all medicine inventory"
+        >
           <div className="flex justify-between items-start">
-            <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700">
+            <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
               <Layers size={24} />
             </div>
-            <span className="text-emerald-700 font-bold text-xs bg-emerald-100 px-2 py-0.5 rounded-full">
-              {uniqueMedicinesCount} Types
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-emerald-700 font-bold text-xs bg-emerald-100 px-2 py-0.5 rounded-full">
+                {uniqueMedicinesCount} Types
+              </span>
+              <ArrowRight size={14} className="text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
+            </div>
           </div>
           <div className="mt-4">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Stock Quantity</p>
@@ -180,22 +192,32 @@ export default function Dashboard({
         </div>
 
         {/* Low Stock alert Card */}
-        <div className={`bg-white p-6 rounded-2xl border flex flex-col justify-between hover:shadow-md transition-all ${
-          lowStockCount > 0 ? "border-l-4 border-l-amber-500 border-slate-200 custom-shadow" : "border-slate-200 custom-shadow"
-        }`}>
+        <div 
+          onClick={() => {
+            if (onFilterInventory) onFilterInventory('Low', 'All');
+            else onNavigate('inventory');
+          }}
+          className={`bg-white p-6 rounded-2xl border flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 active:scale-95 transition-all cursor-pointer group relative ${
+            lowStockCount > 0 ? "border-l-4 border-l-amber-500 border-slate-200 custom-shadow" : "border-slate-200 custom-shadow"
+          }`}
+          title="Click to view low stock medicines"
+        >
           <div className="flex justify-between items-start">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
+            <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 group-hover:bg-amber-100 transition-colors">
               <AlertTriangle size={24} />
             </div>
-            {lowStockCount > 0 ? (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold status-pill-amber animate-pulse">
-                Action Req.
-              </span>
-            ) : (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold status-pill-green">
-                Safe
-              </span>
-            )}
+            <div className="flex items-center gap-1.5">
+              {lowStockCount > 0 ? (
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold status-pill-amber animate-pulse">
+                  Action Req.
+                </span>
+              ) : (
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold status-pill-green">
+                  Safe
+                </span>
+              )}
+              <ArrowRight size={14} className="text-slate-400 group-hover:text-amber-600 group-hover:translate-x-0.5 transition-all" />
+            </div>
           </div>
           <div className="mt-4">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Low Stock Medicines</p>
@@ -206,22 +228,32 @@ export default function Dashboard({
         </div>
 
         {/* Expiry Soon alert Card */}
-        <div className={`bg-white p-6 rounded-2xl border flex flex-col justify-between hover:shadow-md transition-all ${
-          expiringSoonCount > 0 ? "border-l-4 border-l-red-500 border-slate-200 custom-shadow" : "border-slate-200 custom-shadow"
-        }`}>
+        <div 
+          onClick={() => {
+            if (onFilterInventory) onFilterInventory('All', 'Expiring');
+            else onNavigate('inventory');
+          }}
+          className={`bg-white p-6 rounded-2xl border flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 active:scale-95 transition-all cursor-pointer group relative ${
+            expiringSoonCount > 0 ? "border-l-4 border-l-red-500 border-slate-200 custom-shadow" : "border-slate-200 custom-shadow"
+          }`}
+          title="Click to view expiring medicines"
+        >
           <div className="flex justify-between items-start">
-            <div className="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center text-red-600">
+            <div className="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center text-red-600 group-hover:bg-red-100 transition-colors">
               <Calendar size={24} />
             </div>
-            {expiringSoonCount > 0 ? (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold status-pill-red">
-                Urgent Audit
-              </span>
-            ) : (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold status-pill-green">
-                No alerts
-              </span>
-            )}
+            <div className="flex items-center gap-1.5">
+              {expiringSoonCount > 0 ? (
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold status-pill-red">
+                  Urgent Audit
+                </span>
+              ) : (
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold status-pill-green">
+                  No alerts
+                </span>
+              )}
+              <ArrowRight size={14} className="text-slate-400 group-hover:text-red-600 group-hover:translate-x-0.5 transition-all" />
+            </div>
           </div>
           <div className="mt-4">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Expiring Soon (90d)</p>
@@ -232,14 +264,21 @@ export default function Dashboard({
         </div>
 
         {/* Today's Sales Revenue Card */}
-        <div className="bg-white p-6 rounded-2xl border border-l-4 border-l-emerald-500 border-slate-200 custom-shadow flex flex-col justify-between hover:shadow-md transition-all">
+        <div 
+          onClick={() => onNavigate('sales')}
+          className="bg-white p-6 rounded-2xl border border-l-4 border-l-emerald-500 border-slate-200 custom-shadow flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 active:scale-95 transition-all cursor-pointer group relative"
+          title="Click to open POS Billing & Sales terminal"
+        >
           <div className="flex justify-between items-start">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-100 transition-colors">
               <DollarSign size={24} />
             </div>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold status-pill-green">
-              Live
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold status-pill-green">
+                Live
+              </span>
+              <ArrowRight size={14} className="text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
+            </div>
           </div>
           <div className="mt-4">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Today's Sales</p>
@@ -250,14 +289,21 @@ export default function Dashboard({
         </div>
 
         {/* Monthly Revenue Primary-colored Card */}
-        <div className="bg-slate-900 text-white p-6 rounded-2xl shadow-lg border border-slate-900 flex flex-col justify-between hover:shadow-xl transition-all sm:col-span-2 lg:col-span-1">
+        <div 
+          onClick={() => onNavigate('reports')}
+          className="bg-slate-900 text-white p-6 rounded-2xl shadow-lg border border-slate-900 flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 active:scale-95 transition-all cursor-pointer sm:col-span-2 lg:col-span-1 group relative"
+          title="Click to view full financial reports"
+        >
           <div className="flex justify-between items-start">
-            <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white">
+            <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white group-hover:bg-white/20 transition-colors">
               <TrendingUpIcon size={24} />
             </div>
-            <span className="text-emerald-400 font-bold text-xs bg-white/10 px-2.5 py-0.5 rounded-full">
-              Monthly
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-emerald-400 font-bold text-xs bg-white/10 px-2.5 py-0.5 rounded-full">
+                Monthly
+              </span>
+              <ArrowRight size={14} className="text-white/50 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+            </div>
           </div>
           <div className="mt-4">
             <p className="text-xs font-semibold text-white/70 uppercase tracking-wider">Total Monthly Revenue</p>

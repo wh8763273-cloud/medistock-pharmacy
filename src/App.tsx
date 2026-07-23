@@ -51,6 +51,8 @@ export default function App() {
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
   const [isCreateSaleOpen, setIsCreateSaleOpen] = useState(false);
   const [currentMedicineContext, setCurrentMedicineContext] = useState<Medicine | null>(null);
+  const [inventoryStockFilter, setInventoryStockFilter] = useState<'All' | 'Low' | 'Out' | 'Normal'>('All');
+  const [inventoryExpiryFilter, setInventoryExpiryFilter] = useState<'All' | 'Expired' | 'Expiring' | 'Safe'>('All');
 
   // Mobile navigation drawer toggle
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -387,6 +389,8 @@ export default function App() {
               onNavigate={setActiveView}
               onOpenAddMedicine={() => {
                 setIsAddFormOpen(true);
+                setInventoryStockFilter('All');
+                setInventoryExpiryFilter('All');
                 setActiveView('inventory');
               }}
               onOpenCreateSale={() => {
@@ -394,6 +398,11 @@ export default function App() {
                 setActiveView('sales');
               }}
               onSelectMedicineContext={setCurrentMedicineContext}
+              onFilterInventory={(stock, expiry) => {
+                setInventoryStockFilter(stock);
+                setInventoryExpiryFilter(expiry);
+                setActiveView('inventory');
+              }}
             />
           )}
 
@@ -407,6 +416,8 @@ export default function App() {
               onCloseAddForm={() => setIsAddFormOpen(false)}
               onSelectMedicineContext={setCurrentMedicineContext}
               onOpenAssistant={() => setActiveView('ai-assistant')}
+              initialStockFilter={inventoryStockFilter}
+              initialExpiryFilter={inventoryExpiryFilter}
             />
           )}
 

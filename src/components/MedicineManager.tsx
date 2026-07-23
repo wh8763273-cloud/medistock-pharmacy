@@ -23,6 +23,8 @@ interface MedicineManagerProps {
   onCloseAddForm: () => void;
   onSelectMedicineContext?: (med: Medicine) => void;
   onOpenAssistant: () => void;
+  initialStockFilter?: 'All' | 'Low' | 'Out' | 'Normal';
+  initialExpiryFilter?: 'All' | 'Expired' | 'Expiring' | 'Safe';
 }
 
 export default function MedicineManager({ 
@@ -33,13 +35,24 @@ export default function MedicineManager({
   isAddFormOpenByDefault,
   onCloseAddForm,
   onSelectMedicineContext,
-  onOpenAssistant
+  onOpenAssistant,
+  initialStockFilter = 'All',
+  initialExpiryFilter = 'All'
 }: MedicineManagerProps) {
   
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
-  const [stockFilter, setStockFilter] = useState('All');
-  const [expiryFilter, setExpiryFilter] = useState('All');
+  const [stockFilter, setStockFilter] = useState<'All' | 'Low' | 'Out' | 'Normal'>(initialStockFilter);
+  const [expiryFilter, setExpiryFilter] = useState<'All' | 'Expired' | 'Expiring' | 'Safe'>(initialExpiryFilter);
+
+  // Sync initial filters when navigated from Dashboard KPI cards
+  React.useEffect(() => {
+    if (initialStockFilter) setStockFilter(initialStockFilter);
+  }, [initialStockFilter]);
+
+  React.useEffect(() => {
+    if (initialExpiryFilter) setExpiryFilter(initialExpiryFilter);
+  }, [initialExpiryFilter]);
 
   // Form states
   const [isFormOpen, setIsFormOpen] = useState(isAddFormOpenByDefault);
