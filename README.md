@@ -38,6 +38,8 @@ Local community pharmacies and clinical dispensaries face severe operational ris
 - **Live Activity Feed:** Audit trail recording recent dispensing activities and inventory changes.
 
 ### 💊 Medicine & Inventory Manager
+- **Bulk Stock File Import (CSV/Excel/JSON):** Upload complete inventory spreadsheets or CSV files at once! Auto-parses drug records, auto-detects categories, validates batch numbers and expiry dates, and imports entire stock files in one click.
+- **Sample CSV Template Download:** Built-in downloadable CSV template to easily prepare bulk inventory lists in Excel or Google Sheets.
 - **Full SKU Management:** Add, edit, and delete medicines with details including Generic Name, Brand Name, Category, Batch Code, Manufacturer, Quantity, Purchase Price, Selling Price, and Expiration Date.
 - **Low Stock & Expiry Badges:** Color-coded status indicators highlighting out-of-stock, low-stock, and expired batches.
 - **Direct AI Context Consultation:** Click "Consult AI" directly on any medicine card to automatically load that drug into the AI Assistant for instant clinical analysis.

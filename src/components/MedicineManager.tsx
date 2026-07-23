@@ -10,9 +10,11 @@ import {
   CheckCircle,
   X,
   FileSpreadsheet,
+  UploadCloud,
   Info
 } from 'lucide-react';
 import { Medicine } from '../types';
+import BulkImportModal from './BulkImportModal';
 
 interface MedicineManagerProps {
   medicines: Medicine[];
@@ -57,6 +59,13 @@ export default function MedicineManager({
   // Form states
   const [isFormOpen, setIsFormOpen] = useState(isAddFormOpenByDefault);
   const [editingMedicine, setEditingMedicine] = useState<Medicine | null>(null);
+  const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
+
+  const handleBulkImport = async (newMedicines: Omit<Medicine, 'id'>[]) => {
+    for (const med of newMedicines) {
+      await onAddMedicine(med);
+    }
+  };
 
   // Input states
   const [name, setName] = useState('');
@@ -251,13 +260,23 @@ export default function MedicineManager({
           <h1 className="text-2xl font-bold text-slate-800">Medicine Inventory</h1>
           <p className="text-xs text-slate-500">Manage your pharmacy stock, batch codes, prices, and monitor expiration timelines.</p>
         </div>
-        <button
-          onClick={handleOpenAdd}
-          className="flex items-center gap-1.5 px-4 py-2 bg-emerald-500 text-white rounded-xl text-xs font-bold hover:bg-emerald-600 transition-all cursor-pointer shadow-sm self-start"
-        >
-          <Plus size={16} />
-          Add Medicine
-        </button>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <button
+            onClick={() => setIsBulkImportOpen(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-50 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-bold hover:bg-emerald-100 transition-all cursor-pointer shadow-xs"
+            title="Import complete inventory spreadsheet or CSV file"
+          >
+            <UploadCloud size={16} className="text-emerald-600" />
+            <span>Bulk Upload CSV / File</span>
+          </button>
+          <button
+            onClick={handleOpenAdd}
+            className="flex items-center gap-1.5 px-4 py-2 bg-emerald-500 text-white rounded-xl text-xs font-bold hover:bg-emerald-600 transition-all cursor-pointer shadow-sm"
+          >
+            <Plus size={16} />
+            <span>Add Single Medicine</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter Toolbar Card */}
@@ -644,6 +663,13 @@ export default function MedicineManager({
           </div>
         </div>
       )}
+
+      {/* Bulk Stock Import Modal */}
+      <BulkImportModal 
+        isOpen={isBulkImportOpen}
+        onClose={() => setIsBulkImportOpen(false)}
+        onBulkImport={handleBulkImport}
+      />
 
     </div>
   );
