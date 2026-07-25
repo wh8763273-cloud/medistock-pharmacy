@@ -22,28 +22,43 @@ export default function BulkImportModal({ isOpen, onClose, onBulkImport }: BulkI
   // Auto-categorize helper based on drug name keywords
   const guessCategory = (name: string, genName: string = ''): string => {
     const text = (name + ' ' + genName).toLowerCase();
-    if (text.includes('cillin') || text.includes('cef') || text.includes('mycin') || text.includes('mox') || text.includes('flox') || text.includes('cyclin')) {
-      return 'Antibiotics';
+    if (text.includes('cillin') || text.includes('cef') || text.includes('mycin') || text.includes('mox') || text.includes('flox') || text.includes('cyclin') || text.includes('cipro') || text.includes('flagyl') || text.includes('novidat')) {
+      return 'Antibiotics & Anti-Infectives';
     }
-    if (text.includes('paracetamol') || text.includes('ibuprofen') || text.includes('aspirin') || text.includes('diclo') || text.includes('tramadol') || text.includes('analgesic') || text.includes('pain')) {
-      return 'Pain Relievers';
+    if (text.includes('paracetamol') || text.includes('panadol') || text.includes('ibuprofen') || text.includes('brufen') || text.includes('ponstan') || text.includes('mefenamic') || text.includes('analgesic') || text.includes('aspirin')) {
+      return 'Analgesics & Anti-inflammatory';
     }
-    if (text.includes('statin') || text.includes('sartan') || text.includes('olol') || text.includes('pril') || text.includes('card') || text.includes('press') || text.includes('amlodip')) {
-      return 'Cardiac';
+    if (text.includes('omeprazol') || text.includes('risek') || text.includes('antacid') || text.includes('gastro') || text.includes('pantoprazol') || text.includes('famotidine')) {
+      return 'Anti-Ulcerant & Gastrointestinal';
     }
-    if (text.includes('salbutamol') || text.includes('montelukast') || text.includes('cough') || text.includes('cold') || text.includes('resp') || text.includes('asthma') || text.includes('inhaler')) {
-      return 'Respiratory';
+    if (text.includes('statin') || text.includes('lowplat') || text.includes('eziday') || text.includes('sartan') || text.includes('olol') || text.includes('pril') || text.includes('bisoprolol')) {
+      return 'Antihypertensive & Cardiovascular';
     }
-    if (text.includes('omeprazol') || text.includes('antacid') || text.includes('gastro') || text.includes('pantoprazol') || text.includes('ranitidin')) {
-      return 'Gastrointestinal';
+    if (text.includes('getryl') || text.includes('glimepiride') || text.includes('metformin') || text.includes('glucophage') || text.includes('insulin')) {
+      return 'Antidiabetic';
     }
-    if (text.includes('vitamin') || text.includes('multivitamin') || text.includes('calcium') || text.includes('zinc') || text.includes('b-complex')) {
-      return 'Vitamins & Supplements';
+    if (text.includes('salbutamol') || text.includes('ventolin') || text.includes('arinac') || text.includes('cough') || text.includes('hydryllin') || text.includes('montelukast')) {
+      return 'Respiratory & Anti-Asthmatic';
     }
-    if (text.includes('cream') || text.includes('ointment') || text.includes('gel') || text.includes('derm') || text.includes('skin')) {
-      return 'Dermatology';
+    if (text.includes('softin') || text.includes('rigix') || text.includes('loratadine') || text.includes('cetirizine') || text.includes('avil')) {
+      return 'Antihistamine & Anti-Allergic';
     }
-    return 'General Medicine';
+    if (text.includes('surbex') || text.includes('neurobion') || text.includes('vitamin') || text.includes('zinc') || text.includes('calcium') || text.includes('multivitamin')) {
+      return 'Vitamins, Minerals & Supplements';
+    }
+    if (text.includes('epival') || text.includes('valproate') || text.includes('lexotanil') || text.includes('xenor') || text.includes('neuro')) {
+      return 'Neuro-Psychiatric & Anticonvulsant';
+    }
+    if (text.includes('betnovate') || text.includes('cream') || text.includes('ointment') || text.includes('gel') || text.includes('derm')) {
+      return 'Dermatological & Topical';
+    }
+    if (text.includes('gravinate') || text.includes('entamizole') || text.includes('diarrhea') || text.includes('flagyl')) {
+      return 'Antiemetic & Anti-diarrheal';
+    }
+    if (text.includes('syrup') || text.includes('drops') || text.includes('pediatric')) {
+      return 'Pediatric Formulations';
+    }
+    return 'Other Category';
   };
 
   // Helper to parse CSV string into key-value objects
@@ -199,14 +214,14 @@ export default function BulkImportModal({ isOpen, onClose, onBulkImport }: BulkI
   const downloadSampleCSV = () => {
     const csvHeader = "Name,Generic Name,Brand,Category,Batch Number,Manufacturer,Quantity,Purchase Price,Selling Price,Expiry Date\n";
     const csvRows = [
-      "Amoxicillin 500mg,Amoxicillin,GlaxoSmithKline,Antibiotics,BN-90812,GSK Pharma,250,180.00,280.00,2027-08-15",
-      "Azithromycin 250mg,Azithromycin,Pfizer,Antibiotics,BN-44321,Pfizer Ltd,120,350.00,520.00,2026-11-20",
-      "Paracetamol 500mg,Acetaminophen,Panadol,Pain Relievers,BN-11204,GSK Consumer,500,20.00,40.00,2028-02-10",
-      "Omeprazole 20mg,Omeprazole,Prilosec,Gastrointestinal,BN-77821,AstraZeneca,180,110.00,210.00,2027-01-30",
-      "Metformin 800mg,Metformin HCl,Glucophage,Diabetic Care,BN-33910,Merck,300,80.00,150.00,2027-05-18",
-      "Atorvastatin 10mg,Atorvastatin,Lipitor,Cardiac,BN-66541,Pfizer Inc,150,250.00,420.00,2026-12-05",
-      "Salbutamol Inhaler 100mcg,Albuterol,Ventolin,Respiratory,BN-88210,GSK Respiratory,80,650.00,980.00,2027-09-25",
-      "Vitamin C 1000mg,Ascorbic Acid,Cebion,Vitamins & Supplements,BN-22190,Procter & Gamble,400,90.00,180.00,2028-06-30"
+      "Panadol Extra,Paracetamol (500mg) + Caffeine (65mg),Panadol Extra,Analgesics & Anti-inflammatory,PND-2026-09,Haleon GSK,450,35.00,55.00,2028-11-20",
+      "Risek 20mg,Omeprazole,Risek,Anti-Ulcerant & Gastrointestinal,RSK-2026-04,Getz Pharma,220,180.00,260.00,2027-09-15",
+      "Augmentin 625mg,Amoxicillin + Clavulanic Acid,Augmentin,Antibiotics & Anti-Infectives,AUG-2026-02,GSK Pakistan,110,280.00,410.00,2027-04-10",
+      "Arinac Forte,Ibuprofen + Pseudoephedrine,Arinac,Respiratory & Anti-Asthmatic,ARN-2026-08,Abbott Pakistan,180,110.00,175.00,2027-12-01",
+      "Softin 10mg,Loratadine,Softin,Antihistamine & Anti-Allergic,SFT-2026-11,Platinum Pharma,140,90.00,150.00,2027-08-25",
+      "Surbex Z,Multivitamins + Zinc + Vit C,Surbex Z,Vitamins Minerals & Supplements,SBX-2026-10,Abbott Pakistan,210,260.00,390.00,2028-05-12",
+      "Novidat 500mg,Ciprofloxacin,Novidat,Antibiotics & Anti-Infectives,NVD-2026-07,Sami Pharma,95,220.00,340.00,2026-12-10",
+      "Lowplat 75mg,Clopidogrel,Lowplat,Antihypertensive & Cardiovascular,LWP-2026-05,Getz Pharma,130,210.00,330.00,2026-08-15"
     ].join("\n");
 
     const blob = new Blob([csvHeader + csvRows], { type: 'text/csv;charset=utf-8;' });

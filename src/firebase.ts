@@ -62,72 +62,332 @@ if (isFirebaseConfigured) {
 const DEFAULT_MEDICINES: Medicine[] = [
   {
     id: "med-1",
-    name: "Amoxicillin",
-    genericName: "Amoxicillin Trihydrate",
-    brand: "Moxilen",
-    category: "Antibiotics",
-    batchNumber: "AMX202604",
-    manufacturer: "GSK Pharmaceutics",
-    quantity: 120,
-    purchasePrice: 180.00,
-    sellingPrice: 280.00,
-    expiryDate: "2026-11-15",
+    name: "Panadol Extra",
+    genericName: "Paracetamol (500mg) + Caffeine (65mg)",
+    brand: "Panadol Extra",
+    category: "Analgesics & Anti-inflammatory",
+    batchNumber: "PND-2026-09",
+    manufacturer: "Haleon / GSK Pakistan",
+    quantity: 450,
+    purchasePrice: 35.00,
+    sellingPrice: 55.00,
+    expiryDate: "2028-11-20",
+    location: "Rack A-1, Shelf 1",
     createdAt: new Date().toISOString()
   },
   {
     id: "med-2",
-    name: "Lisinopril",
-    genericName: "Lisinopril Dihydrate",
-    brand: "Zestril",
-    category: "Antihypertensive",
-    batchNumber: "LIS202511",
-    manufacturer: "AstraZeneca",
-    quantity: 8, // Low stock demo
-    purchasePrice: 120.00,
-    sellingPrice: 220.00,
-    expiryDate: "2027-02-20",
+    name: "Risek 20mg",
+    genericName: "Omeprazole",
+    brand: "Risek",
+    category: "Anti-Ulcerant & Gastrointestinal",
+    batchNumber: "RSK-2026-04",
+    manufacturer: "Getz Pharma Pakistan",
+    quantity: 220,
+    purchasePrice: 180.00,
+    sellingPrice: 260.00,
+    expiryDate: "2027-09-15",
+    location: "Rack B-2, Shelf 3",
     createdAt: new Date().toISOString()
   },
   {
     id: "med-3",
-    name: "Metformin",
-    genericName: "Metformin Hydrochloride",
-    brand: "Glucophage",
-    category: "Antidiabetic",
-    batchNumber: "MET202601",
-    manufacturer: "Merck KGaA",
-    quantity: 250,
-    purchasePrice: 80.00,
-    sellingPrice: 150.00,
-    expiryDate: "2026-08-10", // Expiring soon demo
+    name: "Augmentin 625mg",
+    genericName: "Amoxicillin Trihydrate + Clavulanate Potassium",
+    brand: "Augmentin",
+    category: "Antibiotics & Anti-Infectives",
+    batchNumber: "AUG-2026-02",
+    manufacturer: "GSK Pakistan",
+    quantity: 110,
+    purchasePrice: 280.00,
+    sellingPrice: 410.00,
+    expiryDate: "2027-04-10",
+    location: "Rack A-3, Shelf 2",
     createdAt: new Date().toISOString()
   },
   {
     id: "med-4",
-    name: "Atorvastatin",
-    genericName: "Atorvastatin Calcium",
-    brand: "Lipitor",
-    category: "Cardiovascular",
-    batchNumber: "ATO202607",
-    manufacturer: "Pfizer Inc.",
-    quantity: 15, // Low stock
-    purchasePrice: 250.00,
-    sellingPrice: 420.00,
-    expiryDate: "2026-08-01", // Expiring soon
+    name: "Arinac Forte",
+    genericName: "Ibuprofen (400mg) + Pseudoephedrine HCl (60mg)",
+    brand: "Arinac Forte",
+    category: "Respiratory & Anti-Asthmatic",
+    batchNumber: "ARN-2026-08",
+    manufacturer: "Abbott Laboratories Pakistan",
+    quantity: 180,
+    purchasePrice: 110.00,
+    sellingPrice: 175.00,
+    expiryDate: "2027-12-01",
+    location: "Rack C-1, Shelf 2",
     createdAt: new Date().toISOString()
   },
   {
     id: "med-5",
-    name: "Paracetamol",
-    genericName: "Acetaminophen",
-    brand: "Panadol",
-    category: "Analgesic",
-    batchNumber: "PAR202609",
-    manufacturer: "Haleon PLC",
-    quantity: 500,
-    purchasePrice: 20.00,
-    sellingPrice: 40.00,
-    expiryDate: "2028-12-31",
+    name: "Brufen 400mg",
+    genericName: "Ibuprofen",
+    brand: "Brufen",
+    category: "Analgesics & Anti-inflammatory",
+    batchNumber: "BRF-2026-05",
+    manufacturer: "Abbott Laboratories Pakistan",
+    quantity: 300,
+    purchasePrice: 45.00,
+    sellingPrice: 80.00,
+    expiryDate: "2028-03-15",
+    location: "Rack A-2, Shelf 1",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-6",
+    name: "Softin 10mg",
+    genericName: "Loratadine",
+    brand: "Softin",
+    category: "Antihistamine & Anti-Allergic",
+    batchNumber: "SFT-2026-11",
+    manufacturer: "Platinum Pharmaceuticals",
+    quantity: 140,
+    purchasePrice: 90.00,
+    sellingPrice: 150.00,
+    expiryDate: "2027-08-25",
+    location: "Rack D-1, Shelf 4",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-7",
+    name: "Rigix 10mg",
+    genericName: "Cetirizine Dihydrochloride",
+    brand: "Rigix",
+    category: "Antihistamine & Anti-Allergic",
+    batchNumber: "RGX-2026-03",
+    manufacturer: "AGP Limited Pakistan",
+    quantity: 160,
+    purchasePrice: 85.00,
+    sellingPrice: 140.00,
+    expiryDate: "2027-07-18",
+    location: "Rack D-1, Shelf 3",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-8",
+    name: "Novidat 500mg",
+    genericName: "Ciprofloxacin Hydrochloride",
+    brand: "Novidat",
+    category: "Antibiotics & Anti-Infectives",
+    batchNumber: "NVD-2026-07",
+    manufacturer: "Sami Pharmaceuticals",
+    quantity: 95,
+    purchasePrice: 220.00,
+    sellingPrice: 340.00,
+    expiryDate: "2026-12-10",
+    location: "Rack A-4, Shelf 2",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-9",
+    name: "Flagyl 400mg",
+    genericName: "Metronidazole",
+    brand: "Flagyl",
+    category: "Antibiotics & Anti-Infectives",
+    batchNumber: "FLG-2026-01",
+    manufacturer: "Sanofi-Aventis Pakistan",
+    quantity: 8, // Low stock demo
+    purchasePrice: 40.00,
+    sellingPrice: 75.00,
+    expiryDate: "2028-01-20",
+    location: "Rack A-4, Shelf 1",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-10",
+    name: "Surbex Z",
+    genericName: "Zinc + Vitamin B-Complex + Vitamin C + Vitamin E",
+    brand: "Surbex Z",
+    category: "Vitamins, Minerals & Supplements",
+    batchNumber: "SBX-2026-10",
+    manufacturer: "Abbott Laboratories Pakistan",
+    quantity: 210,
+    purchasePrice: 260.00,
+    sellingPrice: 390.00,
+    expiryDate: "2028-05-12",
+    location: "Rack E-1, Shelf 1",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-11",
+    name: "Ponstan 250mg",
+    genericName: "Mefenamic Acid",
+    brand: "Ponstan",
+    category: "Analgesics & Anti-inflammatory",
+    batchNumber: "PNS-2026-06",
+    manufacturer: "Pfizer / Martin Dow Pakistan",
+    quantity: 320,
+    purchasePrice: 65.00,
+    sellingPrice: 110.00,
+    expiryDate: "2027-11-30",
+    location: "Rack A-2, Shelf 3",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-12",
+    name: "Getryl 2mg",
+    genericName: "Glimepiride",
+    brand: "Getryl",
+    category: "Antidiabetic",
+    batchNumber: "GTR-2026-09",
+    manufacturer: "Getz Pharma Pakistan",
+    quantity: 170,
+    purchasePrice: 140.00,
+    sellingPrice: 220.00,
+    expiryDate: "2027-06-22",
+    location: "Rack B-1, Shelf 2",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-13",
+    name: "Lowplat 75mg",
+    genericName: "Clopidogrel Bisulfate",
+    brand: "Lowplat",
+    category: "Antihypertensive & Cardiovascular",
+    batchNumber: "LWP-2026-05",
+    manufacturer: "Getz Pharma Pakistan",
+    quantity: 130,
+    purchasePrice: 210.00,
+    sellingPrice: 330.00,
+    expiryDate: "2026-08-15", // Expiring soon
+    location: "Rack B-3, Shelf 1",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-14",
+    name: "Eziday 50mg",
+    genericName: "Losartan Potassium",
+    brand: "Eziday",
+    category: "Antihypertensive & Cardiovascular",
+    batchNumber: "EZY-2026-02",
+    manufacturer: "Hilton Pharma Pakistan",
+    quantity: 145,
+    purchasePrice: 190.00,
+    sellingPrice: 290.00,
+    expiryDate: "2027-09-08",
+    location: "Rack B-3, Shelf 2",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-15",
+    name: "Gravinate 50mg",
+    genericName: "Dimenhydrinate",
+    brand: "Gravinate",
+    category: "Antiemetic & Anti-diarrheal",
+    batchNumber: "GRV-2026-07",
+    manufacturer: "The Searle Company Ltd",
+    quantity: 200,
+    purchasePrice: 30.00,
+    sellingPrice: 55.00,
+    expiryDate: "2028-04-19",
+    location: "Rack C-2, Shelf 1",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-16",
+    name: "Entamizole DS",
+    genericName: "Metronidazole + Diloxanide Furoate",
+    brand: "Entamizole DS",
+    category: "Antiemetic & Anti-diarrheal",
+    batchNumber: "ENT-2026-04",
+    manufacturer: "Highnoon Laboratories Pakistan",
+    quantity: 110,
+    purchasePrice: 120.00,
+    sellingPrice: 195.00,
+    expiryDate: "2027-05-11",
+    location: "Rack C-2, Shelf 3",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-17",
+    name: "Calamox 625mg",
+    genericName: "Amoxicillin + Clavulanic Acid",
+    brand: "Calamox",
+    category: "Antibiotics & Anti-Infectives",
+    batchNumber: "CLM-2026-08",
+    manufacturer: "Bosch Pharmaceuticals",
+    quantity: 85,
+    purchasePrice: 260.00,
+    sellingPrice: 390.00,
+    expiryDate: "2026-08-05", // Expiring soon
+    location: "Rack A-3, Shelf 4",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-18",
+    name: "Ventolin Inhaler",
+    genericName: "Salbutamol Sulfate (100mcg/dose)",
+    brand: "Ventolin",
+    category: "Respiratory & Anti-Asthmatic",
+    batchNumber: "VNT-2026-12",
+    manufacturer: "GSK Pakistan",
+    quantity: 65,
+    purchasePrice: 480.00,
+    sellingPrice: 680.00,
+    expiryDate: "2028-02-28",
+    location: "Rack C-1, Shelf 1",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-19",
+    name: "Neurobion Tablets",
+    genericName: "Vitamin B1 + B6 + B12 (Cobalamin)",
+    brand: "Neurobion",
+    category: "Vitamins, Minerals & Supplements",
+    batchNumber: "NRB-2026-03",
+    manufacturer: "Procter & Gamble / Merck Pakistan",
+    quantity: 280,
+    purchasePrice: 150.00,
+    sellingPrice: 240.00,
+    expiryDate: "2028-06-15",
+    location: "Rack E-1, Shelf 2",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-20",
+    name: "Hydryllin Syrup 120ml",
+    genericName: "Aminophylline + Diphenhydramine + Ammonium Chloride",
+    brand: "Hydryllin",
+    category: "Pediatric Formulations",
+    batchNumber: "HDR-2026-10",
+    manufacturer: "The Searle Company Ltd",
+    quantity: 150,
+    purchasePrice: 80.00,
+    sellingPrice: 135.00,
+    expiryDate: "2027-11-10",
+    location: "Rack C-1, Shelf 4",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-21",
+    name: "Betnovate N Cream",
+    genericName: "Betamethasone Valerate + Neomycin Sulfate",
+    brand: "Betnovate N",
+    category: "Dermatological & Topical",
+    batchNumber: "BTN-2026-01",
+    manufacturer: "GSK Pakistan",
+    quantity: 90,
+    purchasePrice: 95.00,
+    sellingPrice: 160.00,
+    expiryDate: "2027-08-01",
+    location: "Rack D-2, Shelf 1",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "med-22",
+    name: "Epival 250mg",
+    genericName: "Valproate Sodium / Divalproex Sodium",
+    brand: "Epival",
+    category: "Neuro-Psychiatric & Anticonvulsant",
+    batchNumber: "EPV-2026-06",
+    manufacturer: "Abbott Laboratories Pakistan",
+    quantity: 75,
+    purchasePrice: 290.00,
+    sellingPrice: 450.00,
+    expiryDate: "2027-03-30",
+    location: "Rack F-1, Shelf 2",
     createdAt: new Date().toISOString()
   }
 ];
@@ -199,13 +459,27 @@ const DEFAULT_SALES: Sale[] = [
 ];
 
 // Seed local storage with default mock datasets if not set yet
-const getLocalStorageData = <T>(key: string, defaultVal: T[]): T[] => {
+const getLocalStorageData = <T extends { id: string }>(key: string, defaultVal: T[]): T[] => {
   const data = localStorage.getItem(key);
   if (!data) {
     localStorage.setItem(key, JSON.stringify(defaultVal));
     return defaultVal;
   }
-  return JSON.parse(data);
+  const parsed = JSON.parse(data) as T[];
+  if (key === "medistock_medicines" && Array.isArray(parsed)) {
+    const existingIds = new Set(parsed.map(item => item.id));
+    let hasChanges = false;
+    for (const item of defaultVal) {
+      if (!existingIds.has(item.id)) {
+        parsed.push(item);
+        hasChanges = true;
+      }
+    }
+    if (hasChanges) {
+      localStorage.setItem(key, JSON.stringify(parsed));
+    }
+  }
+  return parsed;
 };
 
 const saveLocalStorageData = <T>(key: string, data: T[]): void => {

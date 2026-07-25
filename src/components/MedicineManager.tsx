@@ -21,6 +21,22 @@ import { Medicine } from '../types';
 import BulkImportModal from './BulkImportModal';
 import ConfirmModal from './ConfirmModal';
 
+export const DRUG_CATEGORIES = [
+  "Antibiotics & Anti-Infectives",
+  "Analgesics & Anti-inflammatory",
+  "Anti-Ulcerant & Gastrointestinal",
+  "Antihypertensive & Cardiovascular",
+  "Antidiabetic",
+  "Respiratory & Anti-Asthmatic",
+  "Antihistamine & Anti-Allergic",
+  "Vitamins, Minerals & Supplements",
+  "Neuro-Psychiatric & Anticonvulsant",
+  "Dermatological & Topical",
+  "Antiemetic & Anti-diarrheal",
+  "Pediatric Formulations",
+  "Other Category"
+];
+
 interface MedicineManagerProps {
   medicines: Medicine[];
   onAddMedicine: (med: Omit<Medicine, "id" | "createdAt">) => Promise<any>;
@@ -85,7 +101,7 @@ export default function MedicineManager({
   const [name, setName] = useState('');
   const [genericName, setGenericName] = useState('');
   const [brand, setBrand] = useState('');
-  const [category, setCategory] = useState('Antibiotics');
+  const [category, setCategory] = useState(DRUG_CATEGORIES[0]);
   const [batchNumber, setBatchNumber] = useState('');
   const [manufacturer, setManufacturer] = useState('');
   const [quantity, setQuantity] = useState(0);
@@ -104,7 +120,7 @@ export default function MedicineManager({
   }, [isAddFormOpenByDefault]);
 
   const categories = useMemo(() => {
-    const list = new Set(medicines.map(m => m.category));
+    const list = new Set([...DRUG_CATEGORIES, ...medicines.map(m => m.category)]);
     return ['All', ...Array.from(list)];
   }, [medicines]);
 
@@ -675,17 +691,11 @@ export default function MedicineManager({
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:border-emerald-500 outline-none"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:border-emerald-500 outline-none font-medium"
                   >
-                    <option value="Antibiotics">Antibiotics</option>
-                    <option value="Analgesic">Analgesic (Pain Relief)</option>
-                    <option value="Antihypertensive">Antihypertensive (BP)</option>
-                    <option value="Antidiabetic">Antidiabetic</option>
-                    <option value="Cardiovascular">Cardiovascular</option>
-                    <option value="Respiratory">Respiratory</option>
-                    <option value="Antihistamine">Antihistamine</option>
-                    <option value="Vitamins">Vitamins / Supplements</option>
-                    <option value="Other">Other Category</option>
+                    {DRUG_CATEGORIES.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
                   </select>
                 </div>
 
