@@ -155,19 +155,23 @@ ${currentMedicineContext ? JSON.stringify(currentMedicineContext) : "No specific
 Below are high-resolution screenshots highlighting key workflows in MediStock:
 
 ### 1. Dashboard & Stock Analytics
-![MediStock Dashboard Overview](public/screenshots/dashboard.jpg)
+<img src="./public/screenshots/dashboard.jpg" alt="MediStock Dashboard Overview" width="100%" />
+
 *Real-time stock quantity metrics, low-stock warnings, 90-day expiry alert counts, today's sales tracking, and revenue performance charts.*
 
 ### 2. Point of Sale (POS) Terminal
-![MediStock POS Terminal](public/screenshots/pos.jpg)
+<img src="./public/screenshots/pos.jpg" alt="MediStock POS Terminal" width="100%" />
+
 *Instant medicine search by brand or generic name, multi-item cart, live stock depletion safety checks, tax calculation, and instant receipt generation.*
 
 ### 3. Audit & Analytics Reports
-![MediStock Audit & Analytics Ledger](public/screenshots/audit_reports.jpg)
+<img src="./public/screenshots/audit_reports.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
+
 *Financial sales audit showing gross dispensing revenue, estimated acquisition cost of goods sold (COGS), net profit margins, today's customer receipt logs, and CSV export.*
 
 ### 4. Gemini-Powered Clinical AI Assistant
-![MediStock AI Assistant](public/screenshots/ai_assistant.jpg)
+<img src="./public/screenshots/ai_assistant.jpg" alt="MediStock AI Assistant" width="100%" />
+
 *Domain-bounded clinical AI assistant providing drug pharmacology explanations, chemical classification, dosage conversions, and patient counselling points.*
 
 ---
