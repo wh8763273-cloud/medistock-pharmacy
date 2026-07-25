@@ -11,10 +11,15 @@ import {
   X,
   FileSpreadsheet,
   UploadCloud,
-  Info
+  Info,
+  ArrowUpDown,
+  ChevronLeft,
+  ChevronRight,
+  MapPin
 } from 'lucide-react';
 import { Medicine } from '../types';
 import BulkImportModal from './BulkImportModal';
+import ConfirmModal from './ConfirmModal';
 
 interface MedicineManagerProps {
   medicines: Medicine[];
@@ -47,6 +52,15 @@ export default function MedicineManager({
   const [stockFilter, setStockFilter] = useState<'All' | 'Low' | 'Out' | 'Normal'>(initialStockFilter);
   const [expiryFilter, setExpiryFilter] = useState<'All' | 'Expired' | 'Expiring' | 'Safe'>(initialExpiryFilter);
 
+  // Sorting & Pagination
+  const [sortBy, setSortBy] = useState<'name' | 'quantity' | 'expiryDate' | 'sellingPrice'>('name');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+
+  // Confirm delete modal state
+  const [deleteConfirmItem, setDeleteConfirmItem] = useState<{ id: string; name: string } | null>(null);
+
   // Sync initial filters when navigated from Dashboard KPI cards
   React.useEffect(() => {
     if (initialStockFilter) setStockFilter(initialStockFilter);
@@ -78,6 +92,7 @@ export default function MedicineManager({
   const [purchasePrice, setPurchasePrice] = useState(0);
   const [sellingPrice, setSellingPrice] = useState(0);
   const [expiryDate, setExpiryDate] = useState('');
+  const [location, setLocation] = useState('');
   const [formLoading, setFormLoading] = useState(false);
 
   // Sync state if dashboard clicked "Add Medicine"
@@ -93,18 +108,19 @@ export default function MedicineManager({
     return ['All', ...Array.from(list)];
   }, [medicines]);
 
-  // Filters logic
+  // Filters + Sort logic
   const filteredMedicines = useMemo(() => {
     const today = new Date();
     const ninetyDaysFromNow = new Date();
     ninetyDaysFromNow.setDate(today.getDate() + 90);
 
-    return medicines.filter(m => {
-      // 1. Search term (Name, Generic, Brand)
+    let result = medicines.filter(m => {
+      // 1. Search term (Name, Generic, Brand, Batch)
       const matchesSearch = 
         m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         m.genericName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        m.brand.toLowerCase().includes(searchTerm.toLowerCase());
+        m.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.batchNumber.toLowerCase().includes(searchTerm.toLowerCase());
 
       // 2. Category
       const matchesCategory = categoryFilter === 'All' || m.category === categoryFilter;
@@ -132,7 +148,48 @@ export default function MedicineManager({
 
       return matchesSearch && matchesCategory && matchesStock && matchesExpiry;
     });
-  }, [medicines, searchTerm, categoryFilter, stockFilter, expiryFilter]);
+
+    // Apply Sorting
+    result.sort((a, b) => {
+      let valA: any = a[sortBy];
+      let valB: any = b[sortBy];
+
+      if (sortBy === 'expiryDate') {
+        valA = new Date(a.expiryDate).getTime();
+        valB = new Date(b.expiryDate).getTime();
+      } else if (typeof valA === 'string') {
+        valA = valA.toLowerCase();
+        valB = (valB || '').toLowerCase();
+      }
+
+      if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
+      if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    return result;
+  }, [medicines, searchTerm, categoryFilter, stockFilter, expiryFilter, sortBy, sortOrder]);
+
+  // Reset page when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, categoryFilter, stockFilter, expiryFilter, sortBy, sortOrder]);
+
+  // Paginated records
+  const totalPages = Math.ceil(filteredMedicines.length / pageSize) || 1;
+  const paginatedMedicines = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredMedicines.slice(start, start + pageSize);
+  }, [filteredMedicines, currentPage, pageSize]);
+
+  const handleSortToggle = (field: 'name' | 'quantity' | 'expiryDate' | 'sellingPrice') => {
+    if (sortBy === field) {
+      setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(field);
+      setSortOrder('asc');
+    }
+  };
 
   const resetForm = () => {
     setEditingMedicine(null);
@@ -146,6 +203,7 @@ export default function MedicineManager({
     setPurchasePrice(0);
     setSellingPrice(0);
     setExpiryDate('');
+    setLocation('');
   };
 
   const handleOpenAdd = () => {
@@ -165,16 +223,17 @@ export default function MedicineManager({
     setPurchasePrice(med.purchasePrice ?? 0);
     setSellingPrice(med.sellingPrice ?? 0);
     setExpiryDate(med.expiryDate || '');
+    setLocation(med.location || '');
     setIsFormOpen(true);
   };
 
-  const handleDeleteClick = async (id: string, name: string) => {
-    if (window.confirm(`Are you sure you want to delete ${name} from your pharmacy stock?`)) {
-      try {
-        await onDeleteMedicine(id);
-      } catch (err) {
-        alert("Error deleting medicine");
-      }
+  const handleConfirmDelete = async () => {
+    if (!deleteConfirmItem) return;
+    try {
+      await onDeleteMedicine(deleteConfirmItem.id);
+      setDeleteConfirmItem(null);
+    } catch (err) {
+      alert("Error deleting medicine");
     }
   };
 
@@ -192,7 +251,8 @@ export default function MedicineManager({
       quantity: Number(quantity),
       purchasePrice: Number(purchasePrice),
       sellingPrice: Number(sellingPrice),
-      expiryDate
+      expiryDate,
+      location: location || undefined
     };
 
     try {
@@ -258,7 +318,7 @@ export default function MedicineManager({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Medicine Inventory</h1>
-          <p className="text-xs text-slate-500">Manage your pharmacy stock, batch codes, prices, and monitor expiration timelines.</p>
+          <p className="text-xs text-slate-500">Manage your pharmacy stock, batch codes, prices, shelf locations, and monitor expiration timelines.</p>
         </div>
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <button
@@ -292,7 +352,7 @@ export default function MedicineManager({
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search by Medicine, Generic Name, Brand..."
+              placeholder="Search by Medicine, Generic Name, Brand, Batch..."
               className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/15 transition-all outline-none"
             />
           </div>
@@ -306,7 +366,7 @@ export default function MedicineManager({
                 setExpiryFilter('All');
                 setSearchTerm('');
               }}
-              className="px-3 py-2 text-xs font-semibold text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all"
+              className="px-3 py-2 text-xs font-semibold text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all cursor-pointer"
             >
               Reset Filters
             </button>
@@ -335,7 +395,7 @@ export default function MedicineManager({
             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Stock Level</label>
             <select
               value={stockFilter}
-              onChange={(e) => setStockFilter(e.target.value)}
+              onChange={(e) => setStockFilter(e.target.value as any)}
               className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:border-emerald-500"
             >
               <option value="All">All Stock Levels</option>
@@ -350,7 +410,7 @@ export default function MedicineManager({
             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Expiry timeline</label>
             <select
               value={expiryFilter}
-              onChange={(e) => setExpiryFilter(e.target.value)}
+              onChange={(e) => setExpiryFilter(e.target.value as any)}
               className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:border-emerald-500"
             >
               <option value="All">All Timelines</option>
@@ -364,7 +424,7 @@ export default function MedicineManager({
       </div>
 
       {/* Main Inventory Data Table Card */}
-      <div className="bg-white rounded-2xl border border-slate-200 custom-shadow overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 custom-shadow overflow-hidden flex flex-col justify-between">
         <div className="overflow-x-auto">
           {filteredMedicines.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-slate-400 text-center">
@@ -376,25 +436,65 @@ export default function MedicineManager({
             <table className="w-full text-left border-collapse text-xs">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-100">
-                  <th className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px]">Medicine details</th>
+                  <th 
+                    onClick={() => handleSortToggle('name')}
+                    className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px] cursor-pointer hover:bg-slate-100 transition-colors"
+                  >
+                    <div className="flex items-center gap-1">
+                      Medicine details
+                      <ArrowUpDown size={12} className={sortBy === 'name' ? 'text-emerald-600' : 'text-slate-400'} />
+                    </div>
+                  </th>
                   <th className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px]">Batch & Mfg</th>
                   <th className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px]">Category</th>
-                  <th className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px]">Stock Status</th>
-                  <th className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px]">Price (Purc / Sell)</th>
-                  <th className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px]">Expiry Timeline</th>
+                  <th 
+                    onClick={() => handleSortToggle('quantity')}
+                    className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px] cursor-pointer hover:bg-slate-100 transition-colors"
+                  >
+                    <div className="flex items-center gap-1">
+                      Stock Status
+                      <ArrowUpDown size={12} className={sortBy === 'quantity' ? 'text-emerald-600' : 'text-slate-400'} />
+                    </div>
+                  </th>
+                  <th 
+                    onClick={() => handleSortToggle('sellingPrice')}
+                    className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px] cursor-pointer hover:bg-slate-100 transition-colors"
+                  >
+                    <div className="flex items-center gap-1">
+                      Price (Purc / Sell)
+                      <ArrowUpDown size={12} className={sortBy === 'sellingPrice' ? 'text-emerald-600' : 'text-slate-400'} />
+                    </div>
+                  </th>
+                  <th 
+                    onClick={() => handleSortToggle('expiryDate')}
+                    className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px] cursor-pointer hover:bg-slate-100 transition-colors"
+                  >
+                    <div className="flex items-center gap-1">
+                      Expiry Timeline
+                      <ArrowUpDown size={12} className={sortBy === 'expiryDate' ? 'text-emerald-600' : 'text-slate-400'} />
+                    </div>
+                  </th>
                   <th className="p-4 font-bold text-slate-600 uppercase tracking-wider text-[10px] text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredMedicines.map((med) => (
+                {paginatedMedicines.map((med) => (
                   <tr key={med.id} className="hover:bg-slate-50/50 transition-colors">
                     
-                    {/* Name, Generic, Brand */}
+                    {/* Name, Generic, Brand, Location */}
                     <td className="p-4">
                       <div>
                         <p className="font-bold text-slate-800 text-sm">{med.name}</p>
                         <p className="text-slate-500 italic text-[11px] mt-0.5">Generic: {med.genericName}</p>
-                        <p className="text-emerald-600 text-[10px] font-semibold mt-0.5">Brand: {med.brand}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-emerald-600 text-[10px] font-semibold">Brand: {med.brand}</span>
+                          {med.location && (
+                            <span className="inline-flex items-center gap-0.5 text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-md">
+                              <MapPin size={10} className="text-slate-400" />
+                              {med.location}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </td>
 
@@ -454,7 +554,7 @@ export default function MedicineManager({
                           <Edit2 size={14} />
                         </button>
                         <button
-                          onClick={() => handleDeleteClick(med.id, med.name)}
+                          onClick={() => setDeleteConfirmItem({ id: med.id, name: med.name })}
                           className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                           title="Delete drug record"
                         >
@@ -469,6 +569,39 @@ export default function MedicineManager({
             </table>
           )}
         </div>
+
+        {/* Pagination Bar */}
+        {filteredMedicines.length > 0 && (
+          <div className="p-4 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+            <div>
+              Showing <span className="font-bold text-slate-800">{(currentPage - 1) * pageSize + 1}</span> to{' '}
+              <span className="font-bold text-slate-800">{Math.min(currentPage * pageSize, filteredMedicines.length)}</span> of{' '}
+              <span className="font-bold text-slate-800">{filteredMedicines.length}</span> medicines
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              
+              <span className="px-3 py-1 bg-white border border-slate-200 rounded-lg font-bold text-slate-800 text-xs">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              <button
+                disabled={currentPage >= totalPages}
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Floating Modal Form Panel for Add/Edit Medicine */}
@@ -499,7 +632,7 @@ export default function MedicineManager({
                 
                 {/* Medicine Name */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Medicine Name</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Medicine Name *</label>
                   <input
                     type="text"
                     required
@@ -512,7 +645,7 @@ export default function MedicineManager({
 
                 {/* Generic Chemical Name */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Generic Name (Formula)</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Generic Name (Formula) *</label>
                   <input
                     type="text"
                     required
@@ -525,7 +658,7 @@ export default function MedicineManager({
 
                 {/* Brand Name */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Brand Name</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Brand Name *</label>
                   <input
                     type="text"
                     required
@@ -538,7 +671,7 @@ export default function MedicineManager({
 
                 {/* Category Selection */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Therapeutic Class</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Therapeutic Class *</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
@@ -558,7 +691,7 @@ export default function MedicineManager({
 
                 {/* Batch Code */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Batch Number (SKU)</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Batch Number (SKU) *</label>
                   <input
                     type="text"
                     required
@@ -571,7 +704,7 @@ export default function MedicineManager({
 
                 {/* Manufacturer */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Manufacturer (Vendor Corp)</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Manufacturer (Vendor Corp) *</label>
                   <input
                     type="text"
                     required
@@ -584,7 +717,7 @@ export default function MedicineManager({
 
                 {/* Quantity */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Available Quantity (Stock Units)</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Available Quantity (Stock Units) *</label>
                   <input
                     type="number"
                     min="0"
@@ -597,7 +730,7 @@ export default function MedicineManager({
 
                 {/* Expiry Date */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Expiry Date</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Expiry Date *</label>
                   <input
                     type="date"
                     required
@@ -609,7 +742,7 @@ export default function MedicineManager({
 
                 {/* Purchase Cost */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Purchase Unit Price (Rs.)</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Purchase Unit Price (Rs.) *</label>
                   <input
                     type="number"
                     step="0.01"
@@ -623,7 +756,7 @@ export default function MedicineManager({
 
                 {/* Selling Price */}
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Selling Unit Price (Rs.)</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Selling Unit Price (Rs.) *</label>
                   <input
                     type="number"
                     step="0.01"
@@ -631,6 +764,18 @@ export default function MedicineManager({
                     required
                     value={sellingPrice}
                     onChange={(e) => setSellingPrice(Number(e.target.value))}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:border-emerald-500 outline-none"
+                  />
+                </div>
+
+                {/* Shelf Rack Location */}
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Shelf / Rack Location (Optional)</label>
+                  <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="e.g., Rack A-3, Shelf 2"
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:border-emerald-500 outline-none"
                   />
                 </div>
@@ -671,6 +816,19 @@ export default function MedicineManager({
         onBulkImport={handleBulkImport}
       />
 
+      {/* Custom Confirmation Dialog for Delete */}
+      <ConfirmModal
+        isOpen={!!deleteConfirmItem}
+        title="Delete Medicine Record"
+        message={`Are you sure you want to delete "${deleteConfirmItem?.name}" from your pharmacy stock inventory? This action cannot be undone.`}
+        confirmText="Delete Record"
+        cancelText="Keep Medicine"
+        variant="danger"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setDeleteConfirmItem(null)}
+      />
+
     </div>
   );
 }
+

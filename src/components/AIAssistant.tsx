@@ -8,7 +8,8 @@ import {
   Activity,
   X,
   HelpCircle,
-  HelpCircle as QuestionIcon
+  Copy,
+  Check
 } from 'lucide-react';
 import { ChatMessage, Medicine } from '../types';
 
@@ -33,7 +34,14 @@ export default function AIAssistant({
   
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
+  const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const handleCopy = (id: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedMsgId(id);
+    setTimeout(() => setCopiedMsgId(null), 2000);
+  };
 
   // Auto-scroll to bottom on new message
   useEffect(() => {
@@ -211,11 +219,32 @@ export default function AIAssistant({
                   );
                 })}
               </div>
-              <p className={`text-[9px] text-right block mt-1 ${
-                msg.role === 'user' ? "text-white/60" : "text-slate-400"
-              }`}>
-                {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </p>
+              <div className="flex justify-between items-center mt-2 pt-1 border-t border-slate-100/10">
+                {msg.role === 'model' ? (
+                  <button
+                    onClick={() => handleCopy(msg.id, msg.content)}
+                    className="flex items-center gap-1 text-[10px] text-slate-400 hover:text-emerald-600 transition-colors cursor-pointer"
+                    title="Copy clinical response"
+                  >
+                    {copiedMsgId === msg.id ? (
+                      <>
+                        <Check size={12} className="text-emerald-600" />
+                        <span className="text-emerald-600 font-semibold">Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={12} />
+                        <span>Copy text</span>
+                      </>
+                    )}
+                  </button>
+                ) : <div></div>}
+                <p className={`text-[9px] ${
+                  msg.role === 'user' ? "text-white/60" : "text-slate-400"
+                }`}>
+                  {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </p>
+              </div>
             </div>
           </div>
         ))}

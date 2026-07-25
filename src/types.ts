@@ -7,6 +7,8 @@ export interface Medicine {
   batchNumber: string;
   manufacturer: string;
   quantity: number;
+  minStockLevel?: number;
+  location?: string;
   purchasePrice: number;
   sellingPrice: number;
   expiryDate: string; // YYYY-MM-DD
@@ -27,8 +29,10 @@ export interface Sale {
   invoiceNumber: string;
   items: SaleItem[];
   subtotal: number;
+  discount?: number;
   tax: number;
   total: number;
+  paymentMethod?: 'Cash' | 'Card' | 'Insurance' | 'Mobile Money';
   customerName?: string;
   createdAt: string; // ISO String
   pharmacistId: string;

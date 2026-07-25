@@ -12,6 +12,7 @@ import {
   FileSpreadsheet
 } from 'lucide-react';
 import { Supplier } from '../types';
+import ConfirmModal from './ConfirmModal';
 
 interface SupplierManagerProps {
   suppliers: Supplier[];
@@ -30,6 +31,7 @@ export default function SupplierManager({
   // Modal forms
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
+  const [deleteConfirmItem, setDeleteConfirmItem] = useState<{ id: string; name: string } | null>(null);
 
   // Inputs
   const [name, setName] = useState('');
@@ -58,13 +60,13 @@ export default function SupplierManager({
     setIsFormOpen(true);
   };
 
-  const handleDeleteClick = async (id: string, name: string) => {
-    if (window.confirm(`Are you sure you want to remove supplier ${name}?`)) {
-      try {
-        await onDeleteSupplier(id);
-      } catch (err) {
-        alert("Error removing supplier");
-      }
+  const handleConfirmDelete = async () => {
+    if (!deleteConfirmItem) return;
+    try {
+      await onDeleteSupplier(deleteConfirmItem.id);
+      setDeleteConfirmItem(null);
+    } catch (err) {
+      alert("Error removing supplier");
     }
   };
 
@@ -175,7 +177,7 @@ export default function SupplierManager({
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDeleteClick(sup.id, sup.name)}
+                  onClick={() => setDeleteConfirmItem({ id: sup.id, name: sup.name })}
                   className="px-2.5 py-1.5 border border-red-100 hover:bg-red-50 text-red-600 font-bold rounded-lg flex items-center gap-1 transition-all cursor-pointer bg-white"
                 >
                   <Trash2 size={12} />
@@ -327,6 +329,18 @@ export default function SupplierManager({
           </div>
         </div>
       )}
+
+      {/* Delete confirmation modal */}
+      <ConfirmModal
+        isOpen={!!deleteConfirmItem}
+        title="Remove Medical Supplier"
+        message={`Are you sure you want to remove distributor "${deleteConfirmItem?.name}"? You will no longer see them in your supplier directory.`}
+        confirmText="Remove Supplier"
+        cancelText="Cancel"
+        variant="danger"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setDeleteConfirmItem(null)}
+      />
 
     </div>
   );

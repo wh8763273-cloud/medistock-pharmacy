@@ -85,6 +85,34 @@ export default function Reports({ medicines, sales, onNavigate }: ReportsProps) 
     return Math.max(0, salesRevenueSum - costOfGoodsSold);
   }, [salesRevenueSum, costOfGoodsSold]);
 
+  const handleExportCSV = () => {
+    const list = salesReportPeriod === 'daily' ? dailySalesList : monthlySalesList;
+    if (list.length === 0) {
+      alert("No transaction records available to export.");
+      return;
+    }
+
+    const headers = ["Invoice Number", "Customer Name", "Pharmacist", "Dispensed Items", "Tax (8%)", "Total (Rs)", "Date"];
+    const rows = list.map(s => [
+      `"${s.invoiceNumber}"`,
+      `"${s.customerName || 'Walk-in'}"`,
+      `"${s.pharmacistName || 'System Admin'}"`,
+      `"${s.items.map(i => `${i.name} (${i.quantity}x)`).join('; ')}"`,
+      s.tax.toFixed(2),
+      s.total.toFixed(2),
+      `"${new Date(s.createdAt).toLocaleString()}"`
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `MediStock_Sales_Report_${salesReportPeriod}_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
       
@@ -190,7 +218,7 @@ export default function Reports({ medicines, sales, onNavigate }: ReportsProps) 
                 {salesReportPeriod === 'daily' ? "Today's Receipts" : "Current Month Sales Records"} ({salesReportPeriod === 'daily' ? dailySalesList.length : monthlySalesList.length})
               </span>
               <button
-                onClick={() => alert("Report sheet CSV export initiated successfully.")}
+                onClick={handleExportCSV}
                 className="px-2.5 py-1 bg-white border border-slate-200 text-slate-600 font-bold rounded-lg text-[10px] flex items-center gap-1 hover:bg-slate-50 transition-all cursor-pointer"
               >
                 <Download size={12} />
