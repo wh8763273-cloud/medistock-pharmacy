@@ -51,6 +51,7 @@ export interface UserProfile {
   displayName: string;
   pharmacyName: string;
   createdAt: string;
+  isGuest?: boolean;
 }
 
 export interface ChatMessage {

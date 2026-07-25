@@ -1,5 +1,22 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, User, PlusCircle, Building2, ShieldCheck, ArrowRight } from 'lucide-react';
+import { 
+  Mail, 
+  Lock, 
+  Eye, 
+  EyeOff, 
+  User, 
+  Building2, 
+  ShieldCheck, 
+  ArrowRight, 
+  Sparkles, 
+  CheckCircle2, 
+  Layers, 
+  ShoppingCart, 
+  TrendingUp, 
+  Bot, 
+  Users, 
+  LayoutDashboard
+} from 'lucide-react';
 import { loginUser, registerUser, guestLogin } from '../firebase';
 
 interface AuthProps {
@@ -7,7 +24,7 @@ interface AuthProps {
 }
 
 export default function Auth({ onAuthSuccess }: AuthProps) {
-  const [isLogin, setIsLogin] = useState(true);
+  const [activeTab, setActiveTab] = useState<'signup' | 'signin'>('signup');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,6 +34,21 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [guestLoading, setGuestLoading] = useState(false);
+
+  const handleGuestAccess = async () => {
+    setError('');
+    setGuestLoading(true);
+    try {
+      await guestLogin();
+      onAuthSuccess();
+    } catch (err: any) {
+      console.error(err);
+      setError('Guest access error. Please try again.');
+    } finally {
+      setGuestLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +56,7 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
     setLoading(true);
 
     try {
-      if (isLogin) {
+      if (activeTab === 'signin') {
         await loginUser(email, password);
         onAuthSuccess();
       } else {
@@ -34,7 +66,7 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
         if (password.length < 6) {
           throw new Error("Password must be at least 6 characters");
         }
-        await registerUser(email, password, fullName, pharmacyName);
+        await registerUser(email, password, fullName || "Pharmacist", pharmacyName || "MediStock Pharmacy");
         onAuthSuccess();
       }
     } catch (err: any) {
@@ -46,280 +78,337 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f8f9ff] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col items-center justify-between py-8 px-4 sm:px-6 lg:px-8 relative overflow-x-hidden">
+      
       {/* Background Decorative Blurs */}
-      <div className="absolute top-[-10%] right-[-10%] w-[45%] h-[45%] bg-[#dce9ff] rounded-full blur-[130px] opacity-60 pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] left-[-10%] w-[45%] h-[45%] bg-[#d3e4fe] rounded-full blur-[130px] opacity-60 pointer-events-none"></div>
+      <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-emerald-200/40 rounded-full blur-[140px] pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-200/40 rounded-full blur-[140px] pointer-events-none"></div>
 
-      <main className="w-full max-w-4xl bg-white rounded-2xl shadow-xl border border-[#c3c6d7]/40 overflow-hidden grid md:grid-cols-2 animate-in fade-in zoom-in-95 duration-500 relative z-10">
+      <div className="w-full max-w-5xl z-10 space-y-10 my-auto">
         
-        {/* Left Side: Brand Highlight (Visible on MD and larger) */}
-        <div className="hidden md:flex flex-col justify-between p-10 bg-[#e5eeff] text-[#004ac6] relative overflow-hidden">
-          <div className="z-10">
-            <div className="flex items-center gap-2 mb-8">
-              <div className="p-2 bg-[#004ac6] text-white rounded-lg">
-                <ShieldCheck size={28} className="fill-current" />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-[#004ac6]">MediStock</span>
-            </div>
-            <h2 className="text-3xl font-bold tracking-tight text-[#0b1c30] mb-4 leading-tight">
-              Advanced Inventory Control for Modern Pharmacies
-            </h2>
-            <p className="text-[#434655] text-sm leading-relaxed max-w-[340px]">
-              Join healthcare professionals managing medical inventories, tracking sales, and leveraging AI assistants for clinical accuracy.
-            </p>
+        {/* Top Header / Branding */}
+        <header className="text-center space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-full text-xs font-bold tracking-wide shadow-xs">
+            <ShieldCheck size={16} className="text-emerald-600" />
+            MediStock AI • Pharmacy Operations Platform
           </div>
 
-          {/* Bento Features highlights */}
-          <div className="grid grid-cols-2 gap-4 z-10 mt-8">
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-[#c3c6d7]/30">
-              <span className="text-[#006c49] font-bold text-xs flex items-center gap-1 mb-1">
-                <span className="w-2 h-2 rounded-full bg-[#006c49] animate-pulse"></span>
-                ACTIVE
-              </span>
-              <p className="font-semibold text-xs text-[#0b1c30]">Real-time Tracking</p>
-            </div>
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-[#c3c6d7]/30">
-              <span className="text-[#784b00] font-bold text-xs flex items-center gap-1 mb-1">
-                ⭐ SMART
-              </span>
-              <p className="font-semibold text-xs text-[#0b1c30]">AI Assist Core</p>
-            </div>
-          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Next-Gen Pharmacy & Inventory System
+          </h1>
 
-          {/* Abstract background graphics */}
-          <div className="absolute right-[-10%] bottom-[-10%] w-[240px] h-[240px] border-[16px] border-[#004ac6]/10 rounded-full pointer-events-none"></div>
-          <div className="absolute left-[10%] top-[40%] w-[120px] h-[120px] border-[8px] border-[#006c49]/5 rounded-xl rotate-45 pointer-events-none"></div>
-        </div>
+          <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+            Manage drug stocks, POS billing invoices, audit analytics, and query our Gemini AI Pharmacy Assistant in real time.
+          </p>
+        </header>
 
-        {/* Right Side: Interactive Forms */}
-        <div className="p-8 sm:p-10 flex flex-col justify-center bg-white">
-          <div className="w-full max-w-md mx-auto">
-            
-            {/* Header section with Dynamic Titles */}
-            <header className="mb-8 text-center md:text-left">
-              <div className="flex justify-center md:justify-start items-center gap-2 mb-4 md:hidden">
-                <div className="p-1.5 bg-[#004ac6] text-white rounded-lg">
-                  <ShieldCheck size={20} />
-                </div>
-                <span className="text-lg font-bold text-[#004ac6]">MediStock</span>
-              </div>
-              <h2 className="text-2xl font-bold text-[#0b1c30]">
-                {isLogin ? "Sign In" : "Create Account"}
+        {/* Hero Card: Primary Guest CTA (Centerpiece) */}
+        <section className="bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 text-white rounded-3xl p-8 sm:p-10 shadow-2xl border border-emerald-500/30 text-center relative overflow-hidden max-w-3xl mx-auto">
+          
+          {/* Subtle background glow circle */}
+          <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div className="relative z-10 space-y-6">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/15 backdrop-blur-md rounded-full text-[11px] font-bold text-emerald-100 uppercase tracking-widest">
+              <Sparkles size={14} className="text-amber-300 animate-spin" style={{ animationDuration: '6s' }} />
+              Instant University Final Project Demo
+            </div>
+
+            <div className="space-y-2">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
+                Explore Full Application Demo
               </h2>
-              <p className="text-[#434655] text-sm mt-1">
-                {isLogin ? "Welcome back! Enter your pharmacy credentials." : "Get started with your secure pharmacy database."}
+              <p className="text-emerald-100/90 text-xs sm:text-sm max-w-xl mx-auto">
+                No sign up required. Instantly inspect pre-loaded medicines, generate sales invoices, view financial reports, and chat with AI.
               </p>
-            </header>
+            </div>
 
-            {error && (
-              <div className="mb-6 p-4 bg-[#ffdad6] border-l-4 border-[#ba1a1a] text-[#93000a] text-xs rounded-r-lg font-medium">
-                {error}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              
-              {!isLogin && (
-                <>
-                  {/* Full Name field for Sign Up */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-[#434655] uppercase tracking-wider block" htmlFor="fullName">
-                      Full Name
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#737686]">
-                        <User size={18} />
-                      </span>
-                      <input
-                        id="fullName"
-                        type="text"
-                        required
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="Dr. John Doe"
-                        className="w-full pl-10 pr-4 py-2.5 bg-[#f8f9ff] border border-[#c3c6d7] rounded-lg text-sm focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/15 transition-all outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Pharmacy Name field for Sign Up */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-[#434655] uppercase tracking-wider block" htmlFor="pharmacyName">
-                      Pharmacy Name
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#737686]">
-                        <Building2 size={18} />
-                      </span>
-                      <input
-                        id="pharmacyName"
-                        type="text"
-                        required
-                        value={pharmacyName}
-                        onChange={(e) => setPharmacyName(e.target.value)}
-                        placeholder="Apex Health Rx"
-                        className="w-full pl-10 pr-4 py-2.5 bg-[#f8f9ff] border border-[#c3c6d7] rounded-lg text-sm focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/15 transition-all outline-none"
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Email field */}
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-[#434655] uppercase tracking-wider block" htmlFor="email">
-                  Email Address
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#737686]">
-                    <Mail size={18} />
-                  </span>
-                  <input
-                    id="email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="pharmacist@medistock.com"
-                    className="w-full pl-10 pr-4 py-2.5 bg-[#f8f9ff] border border-[#c3c6d7] rounded-lg text-sm focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/15 transition-all outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Password field */}
-              <div className="space-y-1">
-                <div className="flex justify-between items-center">
-                  <label className="text-xs font-semibold text-[#434655] uppercase tracking-wider block" htmlFor="password">
-                    Password
-                  </label>
-                  {isLogin && (
-                    <button
-                      type="button"
-                      onClick={() => alert("Check your local storage demo, or reset via real Firebase Auth connection if configured.")}
-                      className="text-xs text-[#004ac6] font-medium hover:underline outline-none"
-                    >
-                      Forgot password?
-                    </button>
-                  )}
-                </div>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#737686]">
-                    <Lock size={18} />
-                  </span>
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full pl-10 pr-12 py-2.5 bg-[#f8f9ff] border border-[#c3c6d7] rounded-lg text-sm focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/15 transition-all outline-none"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#737686] hover:text-[#434655] outline-none"
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-              </div>
-
-              {!isLogin && (
-                /* Confirm Password for sign up */
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-[#434655] uppercase tracking-wider block" htmlFor="confirmPassword">
-                    Confirm Password
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#737686]">
-                      <Lock size={18} />
-                    </span>
-                    <input
-                      id="confirmPassword"
-                      type={showPassword ? "text" : "password"}
-                      required
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="w-full pl-10 pr-4 py-2.5 bg-[#f8f9ff] border border-[#c3c6d7] rounded-lg text-sm focus:border-[#004ac6] focus:ring-2 focus:ring-[#004ac6]/15 transition-all outline-none"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Remember Me or HIPAA Checkbox */}
-              {isLogin ? (
-                <div className="flex items-center space-x-2 py-1">
-                  <input
-                    id="remember"
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded border-[#c3c6d7] text-[#004ac6] focus:ring-[#004ac6]/20 cursor-pointer"
-                  />
-                  <label htmlFor="remember" className="text-xs text-[#434655] cursor-pointer select-none">
-                    Remember this device for 30 days
-                  </label>
-                </div>
-              ) : (
-                <div className="flex items-start space-x-2 py-1">
-                  <input
-                    id="terms"
-                    type="checkbox"
-                    required
-                    className="w-4 h-4 mt-0.5 rounded border-[#c3c6d7] text-[#004ac6] focus:ring-[#004ac6]/20 cursor-pointer"
-                  />
-                  <label htmlFor="terms" className="text-xs text-[#434655] leading-relaxed cursor-pointer select-none">
-                    I agree to the <span className="text-[#004ac6] underline hover:text-[#2563eb]">Terms of Service</span> and <span className="text-[#004ac6] underline hover:text-[#2563eb]">Privacy Policy</span> regarding clinical data HIPAA compliance.
-                  </label>
-                </div>
-              )}
-
-              {/* Action Button */}
+            {/* Primary Guest Button */}
+            <div className="pt-2">
               <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-[#004ac6] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#2563eb] shadow-md hover:shadow-lg active:scale-[0.98] transition-all duration-150 mt-4 flex items-center justify-center gap-2 group cursor-pointer"
+                type="button"
+                onClick={handleGuestAccess}
+                disabled={guestLoading}
+                className="w-full sm:w-auto px-8 py-4 bg-white text-emerald-900 hover:bg-emerald-50 font-extrabold text-base sm:text-lg rounded-2xl shadow-xl hover:shadow-2xl active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-3 mx-auto cursor-pointer group border-2 border-emerald-100"
               >
-                {loading ? (
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                {guestLoading ? (
+                  <div className="w-6 h-6 border-3 border-emerald-800 border-t-transparent rounded-full animate-spin"></div>
                 ) : (
                   <>
-                    {isLogin ? "Login" : "Register"}
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    <span>🚀 Continue as Guest (Recommended for Demo)</span>
+                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform text-emerald-700" />
                   </>
                 )}
               </button>
-            </form>
-
-            <div className="mt-8 flex items-center gap-3">
-              <div className="h-[1px] flex-1 bg-[#c3c6d7]/50"></div>
-              <span className="text-[10px] font-bold text-[#737686] uppercase tracking-wider">SECURE END-TO-END DATA</span>
-              <div className="h-[1px] flex-1 bg-[#c3c6d7]/50"></div>
             </div>
 
-            {/* Switch Mode Footer */}
-            <footer className="mt-8 text-center border-t border-[#c3c6d7]/30 pt-6">
-              <p className="text-sm text-[#434655]">
-                {isLogin ? "New to MediStock?" : "Already have a MediStock account?"}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsLogin(!isLogin);
-                    setError('');
-                  }}
-                  className="text-[#004ac6] font-bold hover:underline ml-1.5 focus:outline-none"
-                >
-                  {isLogin ? "Sign Up" : "Login Here"}
-                </button>
-              </p>
-            </footer>
+            {/* Feature Checklist for Guest Access */}
+            <div className="pt-4 border-t border-emerald-500/40 grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-left text-xs font-medium text-emerald-100">
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={15} className="text-emerald-300 shrink-0" />
+                <span>Dashboard Analytics</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={15} className="text-emerald-300 shrink-0" />
+                <span>Medicine Management</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={15} className="text-emerald-300 shrink-0" />
+                <span>Inventory Audit</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={15} className="text-emerald-300 shrink-0" />
+                <span>Sales & POS Billing</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={15} className="text-emerald-300 shrink-0" />
+                <span>Profit & Sales Reports</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 size={15} className="text-emerald-300 shrink-0" />
+                <span>AI Pharmacy Assistant</span>
+              </div>
+            </div>
 
           </div>
-        </div>
-      </main>
+        </section>
+
+        {/* Secondary Section: Create an Account / Sign In */}
+        <section className="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200 max-w-xl mx-auto space-y-6">
+          
+          <div className="text-center space-y-1">
+            <h2 className="text-2xl font-bold text-slate-800">
+              Create an Account
+            </h2>
+            <p className="text-slate-500 text-xs sm:text-sm">
+              Or sign in to your persistent Firebase pharmacy database
+            </p>
+          </div>
+
+          {/* Toggle Tabs: Sign Up vs Sign In */}
+          <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab('signup');
+                setError('');
+              }}
+              className={`flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer ${
+                activeTab === 'signup'
+                  ? "bg-white text-emerald-700 shadow-sm"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              Sign Up
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab('signin');
+                setError('');
+              }}
+              className={`flex-1 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer ${
+                activeTab === 'signin'
+                  ? "bg-white text-emerald-700 shadow-sm"
+                  : "text-slate-500 hover:text-slate-800"
+              }`}
+            >
+              Sign In
+            </button>
+          </div>
+
+          {error && (
+            <div className="p-3.5 bg-rose-50 border-l-4 border-rose-500 text-rose-700 text-xs rounded-r-xl font-medium">
+              {error}
+            </div>
+          )}
+
+          {/* Form Fields */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            
+            {activeTab === 'signup' && (
+              <>
+                {/* Full Name */}
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-600 uppercase tracking-wider block" htmlFor="fullName">
+                    Full Name
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                      <User size={18} />
+                    </span>
+                    <input
+                      id="fullName"
+                      type="text"
+                      required
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder="Dr. Sarah Ahmed"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-600/15 transition-all outline-none"
+                    />
+                  </div>
+                </div>
+
+                {/* Pharmacy Name */}
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-600 uppercase tracking-wider block" htmlFor="pharmacyName">
+                    Pharmacy Name
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                      <Building2 size={18} />
+                    </span>
+                    <input
+                      id="pharmacyName"
+                      type="text"
+                      required
+                      value={pharmacyName}
+                      onChange={(e) => setPharmacyName(e.target.value)}
+                      placeholder="City Care Pharmacy"
+                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-600/15 transition-all outline-none"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Email */}
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-slate-600 uppercase tracking-wider block" htmlFor="email">
+                Email Address
+              </label>
+              <div className="relative">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <Mail size={18} />
+                </span>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="pharmacist@medistock.com"
+                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-600/15 transition-all outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="space-y-1">
+              <div className="flex justify-between items-center">
+                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wider block" htmlFor="password">
+                  Password
+                </label>
+                {activeTab === 'signin' && (
+                  <button
+                    type="button"
+                    onClick={() => alert("Password reset link will be dispatched to your email via Firebase Auth.")}
+                    className="text-xs text-emerald-600 font-medium hover:underline outline-none"
+                  >
+                    Forgot password?
+                  </button>
+                )}
+              </div>
+              <div className="relative">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <Lock size={18} />
+                </span>
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-12 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-600/15 transition-all outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 outline-none"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {activeTab === 'signup' && (
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-slate-600 uppercase tracking-wider block" htmlFor="confirmPassword">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                    <Lock size={18} />
+                  </span>
+                  <input
+                    id="confirmPassword"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-600/15 transition-all outline-none"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Checkbox */}
+            {activeTab === 'signin' ? (
+              <div className="flex items-center space-x-2 py-1">
+                <input
+                  id="remember"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                />
+                <label htmlFor="remember" className="text-xs text-slate-600 cursor-pointer select-none">
+                  Remember this device for 30 days
+                </label>
+              </div>
+            ) : (
+              <div className="flex items-start space-x-2 py-1">
+                <input
+                  id="terms"
+                  type="checkbox"
+                  required
+                  className="w-4 h-4 mt-0.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                />
+                <label htmlFor="terms" className="text-xs text-slate-600 leading-relaxed cursor-pointer select-none">
+                  I agree to the Terms of Service and Privacy Policy regarding clinical data HIPAA standards.
+                </label>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl shadow-md active:scale-[0.99] transition-all duration-150 mt-2 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <>
+                  <span>{activeTab === 'signup' ? "Complete Registration" : "Sign In to Database"}</span>
+                  <ArrowRight size={18} />
+                </>
+              )}
+            </button>
+          </form>
+
+        </section>
+
+      </div>
+
+      {/* Footer */}
+      <footer className="w-full text-center text-xs text-slate-400 py-4 mt-8 z-10 border-t border-slate-200/60">
+        MediStock AI Pharmacy Management System • Designed for Academic & Clinical Operations
+      </footer>
+
     </div>
   );
 }
+

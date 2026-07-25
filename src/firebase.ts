@@ -360,9 +360,10 @@ export const guestLogin = async (): Promise<UserProfile> => {
     const guestUser: UserProfile = {
       uid: "user-demo-evaluator",
       email: "evaluator@medistock.demo",
-      displayName: "Demo Evaluator",
+      displayName: "Guest Evaluator",
       pharmacyName: "MediStock Central Pharmacy",
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      isGuest: true
     };
     localStorage.setItem("medistock_auth_user", JSON.stringify(guestUser));
     currentUser = guestUser;
@@ -375,9 +376,10 @@ export const guestLogin = async (): Promise<UserProfile> => {
       const profile: UserProfile = {
         uid: fbUser.uid,
         email: "evaluator@medistock.demo",
-        displayName: "Demo Evaluator",
+        displayName: "Guest Evaluator",
         pharmacyName: "MediStock Central Pharmacy",
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        isGuest: true
       };
       currentUser = profile;
       authListeners.forEach(l => l(currentUser));
@@ -387,9 +389,10 @@ export const guestLogin = async (): Promise<UserProfile> => {
       const guestUser: UserProfile = {
         uid: "guest-user",
         email: "evaluator@medistock.demo",
-        displayName: "Demo Evaluator",
+        displayName: "Guest Evaluator",
         pharmacyName: "MediStock Central Pharmacy",
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        isGuest: true
       };
       currentUser = guestUser;
       authListeners.forEach(l => l(currentUser));

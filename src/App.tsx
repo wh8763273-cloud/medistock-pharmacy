@@ -199,9 +199,16 @@ export default function App() {
             <span className="font-bold text-lg tracking-tight text-slate-800">MediStock AI</span>
           </div>
 
-          <span className="hidden lg:inline-block px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl text-[10px] font-bold">
-            🏢 {user.pharmacyName}
-          </span>
+          {user.isGuest ? (
+            <span className="px-3 py-1 bg-amber-100 text-amber-800 border border-amber-300 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+              Guest Demo Mode
+            </span>
+          ) : (
+            <span className="hidden lg:inline-block px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl text-[10px] font-bold">
+              🏢 {user.pharmacyName}
+            </span>
+          )}
         </div>
 
         {/* Header Right menu */}
