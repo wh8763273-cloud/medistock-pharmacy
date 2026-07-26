@@ -38,7 +38,7 @@ Experience the fully functional application in production:
 
 ---
 
-## c. Features List — Everything Your App Can Do
+## c. Features List — Everything App Can Do
 
 MediStock AI is packed with features designed for retail and clinical pharmacy workflows:
 
