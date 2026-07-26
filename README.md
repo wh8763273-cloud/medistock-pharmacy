@@ -137,7 +137,7 @@ Here are high-resolution screenshots demonstrating MediStock AI in action:
 
 ### 1. Pharmacy Dashboard & Real-Time Analytics
 <p align="center">
-  <img src="screenshots/dashboard.jpg" alt="MediStock Pharmacy Dashboard" width="100%" />
+  <img src="public/screenshots/my_dashboard.jpg" alt="MediStock Pharmacy Dashboard" width="100%" />
 </p>
 
 *Overview displaying total stock quantity metrics, low-stock warnings, 90-day expiry alert counts, today's sales tracking, and 7-day revenue performance charts.*
@@ -146,7 +146,7 @@ Here are high-resolution screenshots demonstrating MediStock AI in action:
 
 ### 2. Point of Sale (POS) Counter Billing Terminal
 <p align="center">
-  <img src="screenshots/pos.jpg" alt="MediStock POS Billing Terminal" width="100%" />
+  <img src="public/screenshots/my_pos.jpg" alt="MediStock POS Billing Terminal" width="100%" />
 </p>
 
 *Instant medicine search by brand or generic formula, multi-item cart management, live inventory safety checks, sales tax calculation, and instant receipt generation.*
@@ -155,7 +155,7 @@ Here are high-resolution screenshots demonstrating MediStock AI in action:
 
 ### 3. Financial Audit & Analytics Ledger
 <p align="center">
-  <img src="screenshots/audit_reports.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
+  <img src="public/screenshots/my_audit_reports.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
 </p>
 
 *Financial audit view showing gross dispensing revenue, estimated acquisition cost of goods sold (COGS), net profit margins, today's receipt logs, and CSV export.*
@@ -164,7 +164,7 @@ Here are high-resolution screenshots demonstrating MediStock AI in action:
 
 ### 4. Gemini-Powered Clinical AI Assistant
 <p align="center">
-  <img src="screenshots/ai_assistant.jpg" alt="MediStock AI Clinical Assistant" width="100%" />
+  <img src="public/screenshots/my_ai_assistant.jpg" alt="MediStock AI Clinical Assistant" width="100%" />
 </p>
 
 *Domain-bounded clinical AI assistant providing drug pharmacology explanations, chemical classification, dosage conversions, and patient counselling points.*
