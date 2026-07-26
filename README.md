@@ -155,7 +155,7 @@ Here are high-resolution screenshots demonstrating MediStock AI in action:
 
 ### 3. Financial Audit & Analytics Ledger
 <p align="center">
-  <img src="public/screenshots/my_audit_reports.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
+  <img src="public/screenshots/my_audit.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
 </p>
 
 *Financial audit view showing gross dispensing revenue, estimated acquisition cost of goods sold (COGS), net profit margins, today's receipt logs, and CSV export.*
@@ -164,7 +164,7 @@ Here are high-resolution screenshots demonstrating MediStock AI in action:
 
 ### 4. Gemini-Powered Clinical AI Assistant
 <p align="center">
-  <img src="public/screenshots/my_ai_assistant.jpg" alt="MediStock AI Clinical Assistant" width="100%" />
+  <img src="public/screenshots/my_ai.jpg" alt="MediStock AI Clinical Assistant" width="100%" />
 </p>
 
 *Domain-bounded clinical AI assistant providing drug pharmacology explanations, chemical classification, dosage conversions, and patient counselling points.*
