@@ -143,7 +143,7 @@ Below are high-resolution screenshots illustrating MediStock in action:
 
 ### 3. Audit Reports & Financial Sales Ledger
 <p align="center">
-  <img src="public/my_audit_reports.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
+  <img src="public/my_audit.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
 </p>
 *Financial sales audit showing gross dispensing revenue, estimated acquisition cost of goods sold (COGS), net profit margins, today's customer receipt logs, and CSV export.*
 
