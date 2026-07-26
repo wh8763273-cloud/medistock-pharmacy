@@ -1,164 +1,97 @@
-# MediStock — AI-Powered Pharmacy Inventory & Clinical POS System
+# MediStock AI — Pharmacy Inventory & Clinical POS System
 
 [![Live Demo](https://img.shields.io/badge/Live%20Application-MediStock%20Portal-00A86B?style=for-the-badge&logo=react)](https://ais-pre-vgz2sbzjtvi4e6so6pwt4o-1065862164607.asia-southeast1.run.app)
-[![Tech Stack](https://img.shields.io/badge/Stack-React%2018%20%7C%20TypeScript%20%7C%20Tailwind%20%7C%20Firebase%20%7C%20Gemini%202.5-blue?style=for-the-badge)](#tech-stack)
+[![Tech Stack](https://img.shields.io/badge/Stack-React%2018%20%7C%20TypeScript%20%7C%20Tailwind%20%7C%20Firebase%20%7C%20Gemini%202.5-blue?style=for-the-badge)](#e-tools-services-and-ai-models-used)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](#license)
 
 ---
 
-## 📌 Executive Summary
+## a. App Name, What It Does, and the Real Problem It Solves (and for Whom)
 
-**MediStock** is an enterprise-grade, full-stack pharmacy inventory management and Point of Sale (POS) clinical application designed to streamline healthcare dispensary operations. Built for retail pharmacies, hospital dispensaries, and community drug stores, MediStock unifies **cloud-synchronized stock management**, **instant POS billing**, **FEFO (First-Expired, First-Out) expiration auditing**, **wholesaler distributor tracking**, **financial margin analytics**, and an **embedded Gemini 2.5 Flash Clinical AI Assistant** into a single, intuitive workspace.
+### **App Name:** 
+**MediStock AI** — Smart Pharmacy Inventory & Clinical Point of Sale (POS) System
 
-MediStock eliminates operational friction by automating manual stock counts, preventing life-saving drug stockouts, enforcing strict expiration quarantine protocols, and providing pharmacists with instant clinical decision support right at the counter.
+### **What It Does:**
+**MediStock AI** is a comprehensive, full-stack pharmacy management platform designed to modernize daily retail dispensary and hospital pharmacy operations. It unifies **cloud-synchronized real-time stock management**, an **instant Point of Sale (POS) counter billing terminal**, **automated FEFO (First-Expired, First-Out) expiration auditing**, **wholesaler distributor management**, **profit margin accounting**, and an **embedded Gemini 2.5 Flash Clinical AI Assistant** into a single, intuitive dashboard.
 
----
+### **The Real Problem It Solves:**
+In retail pharmacies, community drug stores, and hospital dispensaries, pharmacy staff face five major operational friction points:
 
-## 🎯 Problem Domain & Ground Reality
+1. **Dangerous Stockouts of Critical Medicines:** Essential life-saving medications (such as Insulin, Broad-Spectrum Antibiotics, Anti-hypertensives, and Anti-epileptics) run out unexpectedly because store managers rely on manual logbooks rather than proactive automated low-stock warnings.
+2. **Expired Drug Liabilities & Patient Safety Risks:** Dispensing expired stock due to batch-level tracking difficulties across thousands of SKUs. Without strict FEFO (First-Expired, First-Out) tracking, older batches rot on back shelves while newly delivered stock is sold first.
+3. **Checkout Counter Bottlenecks:** Slow, legacy desktop software or handwritten paper receipts lead to long customer queues during peak hours, causing patient frustration and billing errors.
+4. **On-the-Spot Clinical Information Needs:** Pharmacists frequently need instant, medically verified answers regarding active chemical generic substitutes, exact dosage conversions, storage conditions (refrigerated vs. room temperature), contraindications, and patient counselling guidelines while standing at the dispensing counter.
+5. **Opaque Margins & Financial Leakage:** Store owners struggle to track gross dispensing revenue against acquisition Cost of Goods Sold (COGS), resulting in unmonitored profit leakage and accounting discrepancies.
 
-In fast-paced retail and hospital pharmacy environments, pharmacy staff routinely encounter five critical operational challenges:
-
-1. **Life-Threatening Stockouts of Critical Drugs:** Running out of essential medicines (e.g., Insulin, Antibiotics, Antihypertensives, Anti-epileptics) due to delayed manual stocktaking rather than automated reorder triggers.
-2. **Expired Stock Financial Losses & Safety Risks:** Dispensing expired stock due to batch-level tracking difficulties across thousands of SKUs. Without FEFO tracking, older batches deteriorate on back shelves while newer shipments are sold first.
-3. **Counter Billing Bottlenecks:** Handwritten receipts or legacy slow desktop software lead to long patient queues, calculation errors, and lost sales during rush hours.
-4. **On-the-Spot Clinical Knowledge Needs:** Pharmacists frequently need instant verification of generic substitutes, exact chemical composition, storage conditions (refrigerated vs. ambient), contraindications, and patient counselling points.
-5. **Opaque Financial Margins & Revenue Losses:** Unclear visibility into actual gross sales vs. acquisition Cost of Goods Sold (COGS), leading to unmonitored profit leakages and inventory shrinkage.
-
-**MediStock solves every one of these problems with its 7 core integrated modules.**
-
----
-
-## 🌐 Live Deployed Application
-
-Experience MediStock live in production:
-
-- **Production URL:** [https://ais-pre-vgz2sbzjtvi4e6so6pwt4o-1065862164607.asia-southeast1.run.app](https://ais-pre-vgz2sbzjtvi4e6so6pwt4o-1065862164607.asia-southeast1.run.app)
-
-*Accessible on desktop, tablet, or mobile browsers with real-time Firebase syncing and guest demo access.*
+### **For Whom:**
+Designed specifically for **Community Pharmacists**, **Retail Drug Store Owners**, **Hospital Dispensary Managers**, and **Pharmacy Technicians** who require a fast, accurate, and secure operational workflow.
 
 ---
 
-## 🏛️ System Architecture & Data Flow
+## b. The LIVE Deployed URL — Clickable and Working
 
-```
-                                  +---------------------------------------+
-                                  |            MediStock UI               |
-                                  |   (React 18 + TypeScript + Motion)    |
-                                  +-------------------+-------------------+
-                                                      |
-                                    +-----------------+-----------------+
-                                    |                                   |
-                                    v                                   v
-                      +---------------------------+       +---------------------------+
-                      |   Client State / Storage  |       |   Express Backend Server  |
-                      |   (Firebase Auth & Local) |       |       (Node.js / tsx)     |
-                      +-------------+-------------+       +-------------+-------------+
-                                    |                                   |
-                                    v                                   v
-                      +---------------------------+       +---------------------------+
-                      |   Firebase Firestore DB   |       |   Google Gemini 2.5 Flash |
-                      | (Realtime Inventory/Sales)|       |   Clinical Knowledge AI   |
-                      +---------------------------+       +---------------------------+
-```
+Experience the fully functional application in production:
 
-### Core Architecture Highlights
-- **Server-Side API Key Proxy:** All Gemini 2.5 Flash API calls are routed through a secure Express backend (`/api/chat`), strictly keeping API keys off the browser client.
-- **Atomic POS Transactions:** Checkout actions atomically decrement stock in Firestore, create timestamped billing invoices, and update revenue analytics.
-- **Offline-First Resilience:** Seamlessly syncs with Firebase Firestore when online, with fallback state retention during transient network drops.
+- 🚀 **Live Production Application:** [https://ais-pre-vgz2sbzjtvi4e6so6pwt4o-1065862164607.asia-southeast1.run.app](https://ais-pre-vgz2sbzjtvi4e6so6pwt4o-1065862164607.asia-southeast1.run.app)
+
+*(No complex setup required — accessible on desktop, tablet, or mobile browsers with real-time Firebase cloud syncing and instant Guest Demo Mode).*
 
 ---
 
-## 🧩 Comprehensive Deep-Dive: The 7 Core System Modules
+## c. Features List — Everything Your App Can Do
 
-MediStock is structured into **7 complete, fully developed operational modules**:
+MediStock AI is packed with features designed for retail and clinical pharmacy workflows:
 
-### Module 1: 📊 Pharmacy Dashboard & Real-Time Analytics
-The central command center providing immediate operational visibility:
-- **Real-Time KPI Cards:** Displays Total Stock Quantity (units), Total Registered SKUs, Low Stock Alerts (<15 units), Expiring Soon Batches (90-day window), Today's Sales Revenue (Rs.), and Total Monthly Revenue.
-- **Sales Performance Visualizer:** Interactive 7-day revenue trend bar chart built with Recharts.
-- **Recent Checkout Feed:** Live invoice stream showing customer name, total amount, and transaction status.
-- **Quick Action Trigger Bar:** One-click shortcuts to add new medicines, create sales invoices, run expiry audits, or consult the AI assistant.
+### 📊 1. Pharmacy Dashboard & Real-Time Analytics
+- **Live Inventory Metric Cards:** Instant high-level metrics for Total Stock Quantity (Units), Total SKU Types, Low Stock Depletion Alerts (<15 units), Expiring Soon Batches (90-day window), Today's Sales Revenue (Rs.), and Total Monthly Sales.
+- **Sales Performance Charting:** Interactive visual revenue trend bar charts rendered via Recharts for the last 7 active calendar days.
+- **Recent Checkout Activity Stream:** Timestamped live feed showing customer invoice numbers, total billed amounts, and transaction status.
+- **Quick Operational Shortcuts:** Rapid navigation controls to add new medicines, create sales invoices, trigger expiration audits, or consult the AI assistant.
 
-### Module 2: 💊 Medicine & Stock Management Center
-Comprehensive inventory database management for every pharmaceutical SKU:
-- **11 Detailed SKU Parameters:** Product Name, Generic Formula, Brand, Therapeutic Category, Batch Number, Manufacturer, Available Stock, Purchase Price (Rs.), Retail Selling Price (Rs.), Expiration Date, and Rack/Shelf Location.
-- **Bulk Spreadsheet Import (CSV/Excel):** Upload full pharmacy inventory files in one click. Features automated column mapping, drug category keyword detection, batch validation, and downloadable sample templates.
-- **Multi-Field Search & Filter Engine:** Instant searching across trade names, generic formulas, brands, and batch codes, with filters for therapeutic category, stock depletion status, and expiration timeline.
-- **Sorting & Pagination:** Instant column sorting by drug name, stock level, price, or expiry date, with clean 10-item pagination controls.
-- **Contextual AI Bridge:** Direct "Consult AI" button on any drug card automatically pre-loads its pharmacology parameters into the Clinical AI Assistant.
+### 💊 2. Medicine Stock & SKU Management
+- **Comprehensive Drug Attributes:** Manages 11 parameters per SKU: Product Name, Generic Formula, Brand Name, Therapeutic Category, Batch Number, Manufacturer/Distributor, Available Quantity, Purchase Price (Rs.), Retail Selling Price (Rs.), Expiration Date, and Shelf/Rack Location.
+- **1-Click Bulk Spreadsheet Import (CSV/Excel):** Upload full pharmacy stock lists instantly. Includes automated column header detection, drug category keyword matching, batch validation, and a downloadable CSV template.
+- **Multi-Field Search & Filter Engine:** Filter medicines instantly by text query (Trade Name, Generic Composition, Brand, Batch SKU), Therapeutic Category, Stock Level (Low Stock, Out of Stock, Normal), or Expiration Timeline (Expired, Expiring within 180 days, Safe).
+- **Sortable Data Columns & Pagination:** Reorder inventory by Drug Name, Quantity, Expiry Date, or Retail Price with clean 10-item pagination controls.
+- **Contextual AI Bridge:** Clicking "Consult AI" on any medicine card pre-loads that drug's exact profile directly into the Clinical AI Assistant.
 
-### Module 3: 🛒 Point of Sale (POS) Billing Terminal
-High-speed dispensing counter billing terminal:
-- **Instant Search Bar:** Search medicines by brand name or active generic formula.
-- **Live Inventory Safety Checks:** Real-time stock validation prevents adding or dispensing more units than currently available on shelves.
-- **Cart & Tax Engine:** Adjust quantities on the fly, calculate subtotal, automatically apply configurable sales tax (default 8%), and compute total payable amount.
-- **Atomic Inventory Deduction:** Finalizing an invoice decrements item quantities from the central inventory and generates a printable sales receipt with unique invoice IDs and attending pharmacist logs.
+### 🛒 3. Point of Sale (POS) Counter Billing Terminal
+- **Instant Product Search:** Fast auto-complete search across brand names and active generic formulas.
+- **Real-Time Stock Depletion Protection:** Live cart validation prevents adding or dispensing quantities greater than available physical shelf stock.
+- **Dynamic Pricing & Tax Engine:** Automatic subtotal calculation, configurable sales tax rate (default 8%), and total payable billing.
+- **Atomic Stock Deduction:** Finalizing a bill automatically decrements item stock in the database and generates a printable invoice receipt with attending pharmacist details.
 
-### Module 4: 📈 Audit Reports & Financial Analytics
-In-depth financial ledger and compliance auditing tool:
-- **Revenue & Profit Ledger:** Toggle between Daily Receipts and Monthly Sales summaries displaying gross dispensing revenue, estimated acquisition cost of goods sold (COGS), net profit amount, and percentage profit margin.
-- **180-Day FEFO Expiry Audit:** Identifies expired medicines for immediate quarantine/disposal and flags drugs expiring within 6 months.
-- **Low Stock Depletion Audit:** Specialized audit listing all items at risk of stockout.
-- **CSV Data Export:** Export complete financial transaction sheets directly into CSV spreadsheet format for external accounting.
+### 📈 4. Audit Reports & Financial Analytics
+- **Financial Revenue & Profit Ledger:** Toggle between Daily Receipts and Monthly Sales summaries displaying gross revenue, estimated acquisition Cost of Goods Sold (COGS), net profit, and profit margin percentages.
+- **180-Day FEFO Expiry Audit:** Specialized compliance report identifying expired stock for immediate quarantine/disposal and flagging items expiring within 6 months.
+- **Critical Low Stock Audit:** Instant inventory filter isolating all items near stock exhaustion for bulk supplier reordering.
+- **CSV Ledger Export:** Download complete transaction records directly into CSV spreadsheet files for store accounting.
 
-### Module 5: 🤖 Gemini 2.5 Flash Clinical AI Assistant
-An embedded AI pharmacology assistant powered by Google Gemini 2.5 Flash:
-- **Clinical Pharmacology Support:** Provides instant explanations of drug mechanisms of action, chemical classifications, indications, dosage schedules, side effects, and patient counselling points.
-- **Strict Domain Guardrails:** Enforces system instructions to answer *only* pharmacy, medicine, or healthcare queries, politely declining off-topic questions.
-- **Context Awareness:** Automatically ingests currently selected drug parameters from the UI to provide tailored clinical guidance.
-- **Standard Medical Disclaimer:** Every clinical response includes a standard medical safety disclaimer.
+### 🏢 5. Suppliers & Wholesalers Directory
+- **Distributor Profiles:** Track supplier company names, primary contact persons, phone numbers, procurement emails, warehouse addresses, and active account status.
+- **Direct Procurement Connectivity:** Direct phone and email action links integrated with low-stock warnings for fast reorder processing.
 
-### Module 6: 👥 Suppliers & Wholesalers Directory
-Directory for tracking pharmaceutical distributors and procurement channels:
-- **Distributor Profiles:** Maintains company names, primary contact persons, telephone numbers, order emails, warehouse addresses, and account status.
-- **Direct Procurement Links:** Quick call and email links directly connected to low-stock alerts for immediate stock reordering.
-
-### Module 7: 🔐 Authentication & Access Security
-Role-based user security and session management:
-- **Firebase Authentication:** Secure email and password registration, login, and encrypted session management.
-- **Guest Demo Mode:** One-click evaluator access for immediate platform testing without credentials.
-- **Multi-Tenant State Separation:** Isolated database persistence for individual pharmacy accounts.
+### 🔐 6. Authentication & Access Security
+- **Firebase Authentication:** Encrypted email/password registration, login, and secure user session management.
+- **Guest Demo Mode:** One-click evaluator access for immediate platform testing without registration.
+- **Isolated Cloud Storage:** Real-time Firestore synchronization with multi-tenant data separation.
 
 ---
 
-## 🖼️ Interface Screenshots
+## d. The AI Feature — What It Does and the System Prompt Behind It
 
-Below are high-resolution screenshots illustrating MediStock in action:
+### **What the AI Feature Does:**
+MediStock AI embeds **Google Gemini 2.5 Flash** as a dedicated **Clinical Pharmacy Assistant**. Available directly within the application workspace, it provides pharmacists and dispensary staff with on-the-spot clinical decision support, including:
+- Explaining mechanisms of action and pharmacological profiles of prescribed drugs.
+- Identifying generic equivalents and chemical composition.
+- Advising on proper storage conditions (temperature, humidity, light sensitivity).
+- Providing patient counselling guidelines (timing, food interactions, compliance advice).
+- Summarizing common and rare adverse drug reactions.
 
-### 1. Pharmacy Dashboard & Real-Time Analytics
-<p align="center">
-  <img src="public/my_dashboard.jpg" alt="MediStock Pharmacy Dashboard" width="100%" />
-</p>
-*Real-time stock quantity metrics, low-stock warnings, 90-day expiry alert counts, today's sales tracking, and revenue performance charts.*
+### **Domain Guardrails:**
+To maintain medical accuracy and safety, the AI Assistant is governed by strict system prompt instructions. It is strictly bounded to pharmacy and healthcare topics and politely declines non-medical queries (e.g., general trivia, sports, coding).
 
----
-
-### 2. Point of Sale (POS) Billing Terminal
-<p align="center">
-  <img src="public/my_pos.jpg" alt="MediStock POS Billing Terminal" width="100%" />
-</p>
-*Instant medicine search by brand or generic name, multi-item cart, live stock depletion safety checks, tax calculation, and instant receipt generation.*
-
----
-
-### 3. Audit Reports & Financial Sales Ledger
-<p align="center">
-  <img src="public/my_audit.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
-</p>
-*Financial sales audit showing gross dispensing revenue, estimated acquisition cost of goods sold (COGS), net profit margins, today's customer receipt logs, and CSV export.*
-
----
-
-### 4. Gemini-Powered Clinical AI Assistant
-<p align="center">
-  <img src="public/my_ai.jpg" alt="MediStock AI Clinical Assistant" width="100%" />
-</p>
-*Domain-bounded clinical AI assistant providing drug pharmacology explanations, chemical classification, dosage conversions, and patient counselling points.*
-
----
-
-## 🤖 System Guardrail & AI Prompt Code
-
+### **System Prompt Implementation:**
 ```typescript
 const systemInstruction = `You are a helpful, professional, and friendly AI Pharmacy Assistant for MediStock.
 Your job is to answer ONLY pharmacy-related, medicine-related, pharmaceutical-store, or healthcare-related questions.
@@ -182,60 +115,74 @@ ${currentMedicineContext ? JSON.stringify(currentMedicineContext) : "No specific
 
 ---
 
-## 🛠️ Technical Stack & Dependencies
+## e. Tools, Services, and AI Models Used
 
-| Layer | Component | Description |
+| Layer | Tool / Service / Model | Purpose |
 | :--- | :--- | :--- |
-| **Frontend Framework** | React 18 & TypeScript | Vite-powered SPA architecture with strict type safety |
-| **Styling & Motion** | Tailwind CSS & Framer Motion | Fluid responsive design with micro-interactions |
-| **Icons & Visuals** | Lucide React | Clean, standardized SVG interface icon system |
-| **Charts & Analytics** | Recharts | Responsive revenue bar visualizers and pie charts |
-| **Backend API Proxy** | Node.js, Express & `tsx` | Secure server handling Gemini API proxy and static builds |
-| **Database & Auth** | Firebase Firestore & Auth | Real-time cloud persistence and encrypted authentication |
-| **AI Engine** | Google Gemini 2.5 Flash | `@google/genai` SDK for clinical AI interactions |
-| **Containerization** | Docker / Cloud Run | Port 3000 container deployment |
+| **Frontend Framework** | React 18 & TypeScript | Modern, type-safe Single Page Application framework |
+| **Build Tooling** | Vite & `tsx` | Ultra-fast HMR dev server and TypeScript execution engine |
+| **Styling & UI Components** | Tailwind CSS & Framer Motion | Utility-first styling and smooth UI layout micro-interactions |
+| **Icon System** | Lucide React | Clean, responsive UI vector icon library |
+| **Data Visualization** | Recharts | Responsive revenue bar visualizers and analytics charts |
+| **Backend API Server** | Node.js & Express | Proxy server keeping API keys secure and serving static builds |
+| **Database & Auth** | Firebase Firestore & Auth | Real-time cloud database persistence and secure authentication |
+| **AI Intelligence** | Google Gemini 2.5 Flash | Clinical AI assistant powered by the `@google/genai` TypeScript SDK |
+| **Deployment Runtime** | Cloud Run / Docker | Port 3000 container deployment |
 
 ---
 
-## 📤 Exporting Codebase to Public GitHub
+## f. Screenshots of the App in Action
 
-Follow these exact steps to export and submit this project on GitHub:
+Here are high-resolution screenshots demonstrating MediStock AI in action:
 
-### Step 1: Download ZIP from AI Studio
-1. In the AI Studio top navigation menu, open **Project Settings** or **Export**.
-2. Click **Download / Export Project (ZIP)** and extract the files on your local machine.
+### 1. Pharmacy Dashboard & Real-Time Analytics
+<p align="center">
+  <img src="public/screenshots/dashboard.jpg" alt="MediStock Pharmacy Dashboard" width="100%" />
+</p>
 
-### Step 2: Create a Public GitHub Repository
-1. Go to [GitHub.com](https://github.com) and click **New Repository**.
-2. Name the repository: `medistock-pharmacy`
-3. Set visibility to **Public** *(Required for evaluator verification)*.
-4. **Do NOT** check "Initialize with README" (since `README.md` is included in the project).
-5. Click **Create repository**.
-
-### Step 3: Push Local Code to GitHub
-Open your terminal in the unzipped folder and run:
-```bash
-git init
-git add .
-git commit -m "Initial Commit: MediStock Full-Stack Pharmacy Management System"
-git branch -M main
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/medistock-pharmacy.git
-git push -u origin main
-```
-*(Verify by opening `https://github.com/YOUR_GITHUB_USERNAME/medistock-pharmacy` in an incognito browser window).*
+*Overview displaying total stock quantity metrics, low-stock warnings, 90-day expiry alert counts, today's sales tracking, and 7-day revenue performance charts.*
 
 ---
 
-## 💻 Local Installation & Setup Guide
+### 2. Point of Sale (POS) Counter Billing Terminal
+<p align="center">
+  <img src="public/screenshots/pos.jpg" alt="MediStock POS Billing Terminal" width="100%" />
+</p>
+
+*Instant medicine search by brand or generic formula, multi-item cart management, live inventory safety checks, sales tax calculation, and instant receipt generation.*
+
+---
+
+### 3. Financial Audit & Analytics Ledger
+<p align="center">
+  <img src="public/screenshots/audit_reports.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
+</p>
+
+*Financial audit view showing gross dispensing revenue, estimated acquisition cost of goods sold (COGS), net profit margins, today's receipt logs, and CSV export.*
+
+---
+
+### 4. Gemini-Powered Clinical AI Assistant
+<p align="center">
+  <img src="public/screenshots/ai_assistant.jpg" alt="MediStock AI Clinical Assistant" width="100%" />
+</p>
+
+*Domain-bounded clinical AI assistant providing drug pharmacology explanations, chemical classification, dosage conversions, and patient counselling points.*
+
+---
+
+## g. How to Run the Project
 
 ### Prerequisites
 - **Node.js**: v18.0.0 or higher
 - **npm** or **yarn**
-- **Gemini API Key**: Free API key from [Google AI Studio](https://aistudio.google.com/)
+- **Gemini API Key**: Free API key obtained from [Google AI Studio](https://aistudio.google.com/)
 
-### Step-by-Step Setup
+---
 
-1. **Clone Repository:**
+### Local Installation & Running Steps
+
+1. **Clone the Repository:**
    ```bash
    git clone https://github.com/YOUR_GITHUB_USERNAME/medistock-pharmacy.git
    cd medistock-pharmacy
@@ -246,25 +193,46 @@ git push -u origin main
    npm install
    ```
 
-3. **Configure Environment Variables:**
-   Create a `.env` file in the project root:
+3. **Set Up Environment Variables:**
+   Create a `.env` file in the project root directory:
    ```env
    GEMINI_API_KEY=your_gemini_api_key_here
    ```
 
-4. **Launch Development Server:**
+4. **Launch the Development Server:**
    ```bash
    npm run dev
    ```
 
-5. **Access Application:**
-   Open your browser to `http://localhost:3000`
+5. **Open in Browser:**
+   Navigate to `http://localhost:3000` to access the live application.
+
+---
+
+### How to Export & Push to Public GitHub
+
+If you are submitting or hosting this repository on GitHub:
+
+1. **Export Project Archive:**
+   In AI Studio, open **Project Settings** or **Export** and click **Download / Export Project (ZIP)**.
+2. **Create Public Repository:**
+   Go to [GitHub.com](https://github.com), create a new repository named `medistock-pharmacy`, and select **Public**. Do not initialize with a new README.
+3. **Push Code:**
+   Open terminal inside the unzipped folder and run:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit: Complete MediStock AI Pharmacy Management System"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_GITHUB_USERNAME/medistock-pharmacy.git
+   git push -u origin main
+   ```
 
 ---
 
 ## 📄 License
 
-This project is open-source under the [MIT License](LICENSE) — free to use, modify, and distribute for educational, research, and commercial pharmacy applications.
+This project is licensed under the [MIT License](LICENSE) — free to use, modify, and distribute for educational, research, and commercial pharmacy software applications.
 
 ---
-*MediStock — Modernizing Pharmacy Management with Intelligent AI Automation.*
+*Developed with care for pharmacists, dispensaries, and healthcare professionals worldwide.*
