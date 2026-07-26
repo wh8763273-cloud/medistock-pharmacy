@@ -127,7 +127,7 @@ Below are high-resolution screenshots illustrating MediStock in action:
 
 ### 1. Pharmacy Dashboard & Real-Time Analytics
 <p align="center">
-  <img src="public/screenshots/dashboard.jpg" alt="MediStock Pharmacy Dashboard" width="100%" />
+  <img src="screenshots/dashboard.jpg" alt="MediStock Pharmacy Dashboard" width="100%" />
 </p>
 *Real-time stock quantity metrics, low-stock warnings, 90-day expiry alert counts, today's sales tracking, and revenue performance charts.*
 
@@ -135,7 +135,7 @@ Below are high-resolution screenshots illustrating MediStock in action:
 
 ### 2. Point of Sale (POS) Billing Terminal
 <p align="center">
-  <img src="public/screenshots/pos.jpg" alt="MediStock POS Billing Terminal" width="100%" />
+  <img src="screenshots/pos.jpg" alt="MediStock POS Billing Terminal" width="100%" />
 </p>
 *Instant medicine search by brand or generic name, multi-item cart, live stock depletion safety checks, tax calculation, and instant receipt generation.*
 
@@ -143,7 +143,7 @@ Below are high-resolution screenshots illustrating MediStock in action:
 
 ### 3. Audit Reports & Financial Sales Ledger
 <p align="center">
-  <img src="public/screenshots/audit_reports.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
+  <img src="screenshots/audit_reports.jpg" alt="MediStock Audit & Analytics Ledger" width="100%" />
 </p>
 *Financial sales audit showing gross dispensing revenue, estimated acquisition cost of goods sold (COGS), net profit margins, today's customer receipt logs, and CSV export.*
 
@@ -151,7 +151,7 @@ Below are high-resolution screenshots illustrating MediStock in action:
 
 ### 4. Gemini-Powered Clinical AI Assistant
 <p align="center">
-  <img src="public/screenshots/ai_assistant.jpg" alt="MediStock AI Clinical Assistant" width="100%" />
+  <img src="screenshots/ai_assistant.jpg" alt="MediStock AI Clinical Assistant" width="100%" />
 </p>
 *Domain-bounded clinical AI assistant providing drug pharmacology explanations, chemical classification, dosage conversions, and patient counselling points.*
 
