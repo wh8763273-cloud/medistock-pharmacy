@@ -151,7 +151,7 @@ Below are high-resolution screenshots illustrating MediStock in action:
 
 ### 4. Gemini-Powered Clinical AI Assistant
 <p align="center">
-  <img src="public/my_ai_assistant.jpg" alt="MediStock AI Clinical Assistant" width="100%" />
+  <img src="public/my_ai.jpg" alt="MediStock AI Clinical Assistant" width="100%" />
 </p>
 *Domain-bounded clinical AI assistant providing drug pharmacology explanations, chemical classification, dosage conversions, and patient counselling points.*
 
